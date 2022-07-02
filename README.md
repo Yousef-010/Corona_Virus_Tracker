@@ -1,1 +1,1 @@
-# Features FOR THE PROJECT
+#  The features of the project
