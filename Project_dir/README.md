@@ -38,8 +38,8 @@
       - Make a plan to save some money
 - What is the minimum required for you to present on your demo day?
   - we need libraries as :
-        - Tkinter to make the GUI 
-        - pandas to make a data frame 
-        - numpy to deal with arrays
-        - matplotlib to do some data visualization and analysis
-        - bs4 and beautifulsoup to deo web scraping
+      - Tkinter to make the GUI 
+      - pandas to make a data frame 
+      - numpy to deal with arrays
+      - matplotlib to do some data visualization and analysis
+      - bs4 and beautifulsoup to deo web scraping
