@@ -1,1 +1,1 @@
-# user stories of the project
+# user stories of our project

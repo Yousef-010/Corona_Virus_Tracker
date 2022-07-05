@@ -1,1 +1,1 @@
-# requirement of the project
+# requirements for the project
