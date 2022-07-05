@@ -1,1 +1,0 @@
-# wireframe of the project
