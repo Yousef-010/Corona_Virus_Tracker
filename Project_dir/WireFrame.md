@@ -1,2 +1,1 @@
-# wireframe of the project 
-- hello test 
+# wireframe of the project
