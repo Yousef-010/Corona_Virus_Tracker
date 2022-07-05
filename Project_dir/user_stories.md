@@ -23,6 +23,26 @@
         Moderate -> 1 day
 
 
+
+## Student
+> As a student, I want to be able to download visuals and data structures, in commonly used formats. 
+
+### Feature Tasks:
+- The user can download data and related visuals when they choose to.
+- The user should be able to configure the file format and target directory of their downloads.
+
+
+
+
+### Acceptance Tests:
+- Allow the user the choice to store or read their requested files.
+- Ensure that downloaded files are not corrupted before storing them on the user's device.
+- Provide the user with the choice to pick a format for their download.
+        
+        small -> 2 hours
+
+
+
 ## Professor
 > “As an academic, I want to be able to use corona related statistics and analysis for scientific purposes.
 
@@ -42,7 +62,7 @@
 
 
 ## Official
-> “As a government official, I want the ability to verify the authenticity of data so that policies can be based
+> As a government official, I want the ability to verify the authenticity of data so that policies can be based
   upon it when necessary.
 
 ### Feature Tasks:
