@@ -1,1 +1,103 @@
-> user stories
+# User Stories
+
+<hr/>
+
+## Doctor
+> As a medical professional, I want the ability to access the latest statistics related to COVID along with
+  useful polices, projections or tips that could be necessary without delay.
+
+
+### Feature Tasks:
+- User inquiries are always met fresh data.
+- The user can view useful stats related to their inquiry.
+- The user can choose to view useful non-numerical information related to their inquiry.
+
+
+
+### Acceptance Tests:
+- Ensure user requests are processed in real time.
+- Provide the user with the choice to refresh the results of their inquiries.
+- Ensure any tips or news provided to the user come from trusted sources only.
+
+  
+        Moderate -> 1 day
+
+
+## Professor
+> “As an academic, I want to be able to use corona related statistics and analysis for scientific purposes.
+
+
+### Feature Tasks:
+- The user can access and choose among a variety of filtered and organized data collections. 
+- The user can choose to use specific established scientific analysis tools to visualize the data they view.
+- the user have the ability to tune some parameters to customize their experience.
+
+### Acceptance Tests:
+- Ensure all analytical tools are easily accessible.
+- Ensure the usage of proper agreed-upon terminology **only** within the app.
+- Ensure the most common analysis and visualization tools are available for the user.
+
+
+        Extra Large -> 2 days
+
+
+## Official
+> “As a government official, I want the ability to verify the authenticity of data so that policies can be based
+  upon it when necessary.
+
+### Feature Tasks:
+- The user can get the source of the data they are viewing.
+- The user can cite the source of the data they wish to use for legitimate purposes.
+
+
+
+
+### Acceptance Tests:
+- Ensure that the data provided to the user is not fake.
+- Provide the user with the references and/or contacts of data whenever available.
+- Ensure the visibility of copyrights disclaimers and status whenever necessary.
+- 
+
+        Moderate -> 1 day
+
+
+## Casual user
+> As a user, I want to search for my country's/region's corona related stats, while still being able to compare
+  them to other countries' and the world's. 
+
+
+### Feature Tasks:
+- The user can specify which region they wish to inquire about.
+- The user can compare data.
+
+
+
+### Acceptance Tests:
+- Ensure that country/region-specific data and analysis is specified as such, and presented clearly. 
+- Provide the user with visualizations for the data the wish to read.
+
+
+        Small -> 8 hours
+
+
+
+
+## Young user
+> As an adolescent user, I want the ability interact with the app UI without much knowledge of its inner workings.
+
+### Feature Tasks:
+- The user can interact with the app without sign in or registration.
+- The user can install/run the app without being tech-savvy.
+
+
+
+### Acceptance Tests:
+- Ensure that the contents and data accessible by users are safe and appropriate for all ages.
+- Allow access to the application and its main functions without unnecessary restriction, while still making 
+  sure no unwanted changes are made to it.
+- Ensure that the user interface is simple-looking and user-friendly.
+
+        
+        Large -> 1.5 days
+
+
