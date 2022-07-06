@@ -43,3 +43,16 @@
       - numpy to deal with arrays
       - matplotlib to do some data visualization and analysis
       - bs4 and beautifulsoup to deo web scraping
+
+- Team agreement
+[team agreement](Team_Agreement.md)
+- requirements
+[requirements](Project_dir/requirements.md)
+- domain_modelin_digram
+[domain_modeling_diagram](Project_dir/Domain_modeling.md)
+- user_stories
+[user_stories](Project_dir/user_stories)
+- Wire Frame
+[Wire Frame](Project_dir/wireFrame.md)
+- trello
+[Trello PM](https://trello.com/b/1xXozFIe/agile)
