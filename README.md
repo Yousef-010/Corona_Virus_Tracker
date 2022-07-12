@@ -5,8 +5,8 @@
 - Shatha Alrayyani
 - Essa abo ALKhair
 
-> Our ideas  
-- The First idea 
+> The idea   
+- Idea Details
   - Name of Project
     - Coronavirus Tracker
   - Summary of idea.
@@ -24,35 +24,17 @@
       - pandas to make a data frame 
       - numpy to deal with arrays
       - matplotlib to do some data visualization and analysis
-      - bs4 and beautifulsoup to deo web scraping
-
-- The second idea 
-  - Name of Project
-    - Personal Financial dashboard 
-      - Summary of idea.
-      - Through this idea, we will try to determine the monthly revenue of the user and analyze his expenses and needs
-      - We will be able to analyze this data and identify unnecessary overspending points, and we will provide analyzes for most users and how they manage their expenses
-      - We will also give the user some tips on how to manage his expenses and work on developing a plan to enable the user to save and save some money
-    - What problem or pain point does it solve? 
-      - Through this idea, we can guide the client and also develop a management plan
-      - Make a plan to save some money
-- What is the minimum required for you to present on your demo day?
-  - we need libraries as :
-      - Tkinter to make the GUI 
-      - pandas to make a data frame 
-      - numpy to deal with arrays
-      - matplotlib to do some data visualization and analysis
-      - bs4 and beautifulsoup to deo web scraping
+      - requests to deal with api 
 
 - Team agreement
 [team agreement](Team_Agreement.md)
 - requirements
-[requirements](Project_dir/requirements.md)
+[requirements](Project_dir/readme_files/requirements.md)
 - domain_modelin_digram
-[domain_modeling_diagram](Project_dir/Domain_modeling.md)
+[domain_modeling_diagram](Project_dir/readme_files/Domain_modeling.md)
 - user_stories
-[user_stories](Project_dir/user_stories)
+[user_stories](Project_dir/readme_files/user_stories.md)
 - Wire Frame
-[Wire Frame](Project_dir/wireFrame.md)
+[Wire Frame](Project_dir/readme_files/wireFrame.md)
 - trello
 [Trello PM](https://trello.com/b/1xXozFIe/agile)
