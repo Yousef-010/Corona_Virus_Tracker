@@ -72,16 +72,18 @@ def region_input():
 
         back_btn.pack(side='left', pady=150)
         # next_btn.pack(side='right', padx=100, pady=50)
-    g_c, b_c = da.get_report_based_on_avg_of_survivors()
-    countries = g_c + b_c
+    # g_c, b_c = da.get_report_based_on_avg_of_survivors()
+    # countries = g_c + b_c
+    countries = ['usa', 'uk']
 
     def country_list():
-        clicked_country = StringVar()
+
+        clicked_country = tkinter.StringVar(country_region_window)
         clicked_country.set('Choose a Country')
-        country_choice = clicked_country.get()
-        country_drop_list = OptionMenu(country_region_window, clicked_country, *countries)
+        country_drop_list = OptionMenu(country_region_window, clicked_country,  *countries)
         country_drop_list.pack(pady=25, padx=25)
-        return country_choice
+        country_choice = clicked_country.get()
+        return 'HI, ' + country_choice
 
     regions = [
         'Middle East',
@@ -89,17 +91,19 @@ def region_input():
     ]
 
     def region_list():
-        clicked_region = StringVar()
+        clicked_region = StringVar(country_region_window)
+        reg_drop_list = OptionMenu(country_region_window, clicked_region, *regions)
         clicked_region.set('Choose a Region')
         region_choice = clicked_region.get()
-        reg_drop_list = OptionMenu(country_region_window, clicked_region, *regions)
         reg_drop_list.pack(pady=25, padx=25)
         return region_choice
 
     def country_region_next():
+        print(country_list())
+
         country_choice = country_list()
         region_choice = region_list()
-        if country_choice:
+        if country_choice is not None:
             country_region_window.destroy()
             country_output.country_data()
         elif region_choice:
@@ -117,5 +121,5 @@ def region_input():
     country_region_window.mainloop()
 
 
-# if __name__ == '__main__':
-#     region_input()
+if __name__ == '__main__':
+    region_input()
