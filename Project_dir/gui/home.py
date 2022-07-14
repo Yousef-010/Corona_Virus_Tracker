@@ -26,6 +26,21 @@ def welcome_msg():
     welcome.pack(pady=25)
 
 
+def user_name_input():
+    user_name = Entry(width=25,
+                      font=('Andalus', 20),
+                      bg=clr2,
+                      bd=2.5,
+                      foreground=clr1,
+                      justify='center',
+                      borderwidth=5)
+
+    user_name.pack(pady=25)
+    user_name.insert(0, 'Please Enter Your Name')
+    name = str(user_name.get())
+    return 'Hello ' + name.capitalize()
+
+
 def user_profession():
     prof = StringVar()
     prof.set('Please Enter Your Profession')
@@ -44,21 +59,15 @@ def user_profession():
     return profession
 
 
-# def home_click_next():
-#     nonl
-#     hello = 'Hello ' = prof
-
-
-# def home_prof_input():
-#     home_in = Button(root,
-#                      text='Enter Name',
-#                      command=)
+def home_next():
+    root.destroy()
+    region_input()
 
 
 def next_button():
     next_btn = Button(root,
                       text='Next',
-                      command=region_input(),
+                      command=home_next,
                       bg=clr2,
                       height=2,
                       width=15,
@@ -83,6 +92,8 @@ def home_window():
 
     welcome_msg()
     user_profession()
+    user_name_input()
+
     next_button()
 
     root.mainloop()
