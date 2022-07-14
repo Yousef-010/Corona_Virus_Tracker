@@ -1,8 +1,8 @@
 import tkinter
 import home
 import pandas as pd
-# import country_output
-# import region_output
+import country_output
+import region_output
 from tkinter import *
 import Project_dir.api.data_analysis as da
 
@@ -99,14 +99,14 @@ def region_input():
     def country_region_next():
         country_choice = country_list()
         region_choice = region_list()
-        country_region_window.destroy()
         if country_choice:
-            pass
-            # country_output.country_data()
+            country_region_window.destroy()
+            country_output.country_data()
         elif region_choice:
-            pass
-            # region_output.region_data()
-        # else:
+            country_region_window.destroy()
+            region_output.region_data()
+        else:
+            return 'ERROR MSG'
 
     region_input_instructions()
     region_list()
@@ -117,5 +117,5 @@ def region_input():
     country_region_window.mainloop()
 
 
-if __name__ == '__main__':
-    region_input()
+# if __name__ == '__main__':
+#     region_input()
