@@ -1,12 +1,9 @@
 import numpy as np
 import pandas as pd
-
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 sns.set(style='white', color_codes=True)
 from Project_dir.api.data_analysis import *
-
 from tkinter import *
 from region_input import region_input
 from tkinter import ttk
