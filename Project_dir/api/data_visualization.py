@@ -9,7 +9,7 @@ from Project_dir.api.data_analysis import *
 
 path = 'topics.csv'
 data_set = pd.read_csv(path).head()
-# print(data_set.head())    
+# print(data_set.head())
 
 x = data_set['survivors'].values.reshape(-1, 1)
 y = data_set['TotalDeaths'].values.reshape(-1, 1)
