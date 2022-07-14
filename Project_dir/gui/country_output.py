@@ -77,5 +77,5 @@ def country_data():
     country_page.mainloop()
 
 
-# if __name__ == '__main__':
-#     country_data()
+if __name__ == '__main__':
+    country_data()

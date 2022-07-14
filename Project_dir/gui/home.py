@@ -42,8 +42,10 @@ def home_window():
 
         user_name.pack(pady=25)
         user_name.insert(0, 'Please Enter Your Name')
-        name = str(user_name.get())
-        return 'Hello ' + name.capitalize()
+        # name = str(user_name.get())
+        # return 'Hello ' + name.capitalize()
+        return user_name
+
 
     def user_profession():
         prof = StringVar(root)
@@ -63,7 +65,9 @@ def home_window():
         return profession
 
     def home_next():
-        root.destroy()
+        # root.destroy()
+        user_name = user_name_input()
+        print('Hi' , user_name.get())
         region_input.region_input()
 
     def next_button():

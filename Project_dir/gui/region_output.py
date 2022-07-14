@@ -77,8 +77,8 @@ def region_data():
     region_page.mainloop()
 
 
-# if __name__ == '__main__':
-#     region_data()
+if __name__ == '__main__':
+    region_data()
 
 
 
