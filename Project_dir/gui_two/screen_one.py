@@ -2,9 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from pandastable import Table, TableModel
 # from tkinter.filedialog import asksaveasfilename
-from tkinter import messagebox,filedialog
-
-
+from tkinter import messagebox, filedialog
+from datetime import datetime
 import pandas as pd
 from Project_dir.api.data_analysis import *
 
@@ -15,7 +14,7 @@ clr2 = '#141E61'
 root = Tk()
 root.title('COVID Live Tracker')
 root.configure(bg=bkg1)
-root.minsize(width=900, height=600)
+root.minsize(width=900, height=300)
 
 welcome = Label(root, text="""Welcome To COVID Live Tracker
 Your COVID Related Stats Viewer, Analyzer and Downloader 
@@ -35,7 +34,7 @@ def home_next():
     country_region_window = Tk()
     country_region_window.title('Country/Region Input')
     country_region_window.configure(bg=bkg1)
-    country_region_window.minsize(width=900, height=600)
+    country_region_window.minsize(width=500, height=300)
 
     region_input_instruction = 'HI ' + user_name.get() + """
     Kindly choose a country or a region 
@@ -115,7 +114,7 @@ def home_next():
             ft = 'serif bold'
             country_page = Tk()
             country_page.title('Country_page')
-            country_page.minsize(width=900, height=600)
+            country_page.minsize(width=800, height=400)
 
             ###### country Table
 
@@ -132,10 +131,10 @@ def home_next():
                                'Fatality_ratio': selected_country['Fatality_ratio'],
                                'Region': selected_country['Region'],
                                'Date': selected_country['Date'],
-                }
+                               }
                 selected_df = pd.DataFrame(selected_df)
                 selected_df.to_csv(f'{path}.csv')
-                messagebox.showinfo(f'{clicked_country.get()} data downloaded _______')
+                messagebox.showinfo(title= f'{clicked_country.get()} Download', message='Your Data Has been downloaded successfully' )
 
             def back_function():
                 country_page.destroy()
@@ -151,13 +150,74 @@ def home_next():
                 TS = data_set[data_set.Name == clicked_country.get()].iloc[0]['Fatality_ratio']
 
                 labels = 'TotalConfirmed', 'survivors', 'Fatality_ratio'
-                sizes = [TC, TD, TS*10000]
+                sizes = [TC, TD, TS * 10000]
                 explode = (0, 0, 0)
                 fig1, ax1 = plt.subplots()
-                ax1.pie(sizes, explode=explode, labels=labels,autopct='%1.0f%%',
+                ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.0f%%',
                         shadow=True, startangle=90)
                 ax1.axis('equal')
                 plt.show()
+
+            def display_data():
+                data_set = pd.read_csv('topics.csv')
+                selected_country = data_set[data_set.Name == clicked_country.get()]
+                selected_df = {'Name': selected_country['Name'],
+                               'TotalConfirmed': selected_country['TotalConfirmed'],
+                               'TotalDeaths': selected_country['TotalDeaths'],
+                               'NewConfirmed': selected_country['NewConfirmed'],
+                               'NewDeaths': selected_country['NewDeaths'],
+                               'survivors': selected_country['survivors'],
+                               'Fatality_ratio': selected_country['Fatality_ratio'],
+                               'Region': selected_country['Region'],
+                               'Date': datetime.now().strftime("%Y-%m-%d %H:%M")
+                               }
+                selected_df = pd.DataFrame(selected_df)
+
+                tree = ttk.Treeview(country_page, padding=5, height=3, selectmode='browse')
+                scrollbar = Scrollbar(country_page, orient="horizontal", width=20)
+                tree.config(xscrollcommand=scrollbar.set)
+                scrollbar.config(command=tree.xview)
+
+                tree["column"] = list(selected_df.columns)
+                tree["show"] = "headings"
+                tree.column("# 0.5", anchor=CENTER, stretch=NO, width=50)
+                tree.column("# 0.5", anchor=CENTER, stretch=NO)
+                for col in tree["column"]:
+                    tree.heading(col, text=col)
+
+                df_rows = selected_df.to_numpy().tolist()
+                for row in df_rows:
+                    tree.insert("", "end", values=row)
+
+                tree.pack()
+                scrollbar.pack(fill = 'both')
+
+            display_data()
+
+            def display_report():
+                data_set = pd.read_csv('topics.csv')
+                selected_country = data_set[data_set.Name == clicked_country.get()]
+                if selected_country['NewConfirmed'].values[0] > 0:
+
+                    messagebox.showinfo(title= f'{clicked_country.get()}  report',
+                                        message=f'''Today is {datetime.now().strftime("%Y-%m-%d %H:%M")} \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of contracting the virus is  {round(((1/selected_country['NewConfirmed'].values[0])*100),2 )} % \nThe possibility of your death is {round(((selected_country['NewDeaths'].values[0]/selected_country['NewConfirmed'].values[0])*100),2)} % \nThe health system in {selected_country['Name'].values[0]} not good 
+                        
+                    ''')
+                else:
+                    messagebox.showinfo(title= f'{clicked_country.get()}  report',
+                                        message=f'''Today is  {datetime.now().strftime("%Y-%m-%d %H:%M")} \nThe possibility of contracting the virus is {round(((selected_country['NewConfirmed'].values[0])*100),2 )} % \nIf you want to visit {selected_country['Name'].values[0]} you can do it \nEnjoy spending time there :) ''')
+
+            rep_btn = Button(country_page,
+                             text='Show Report',
+                             bg=clr2,
+                             height=2,
+                             width=15,
+                             foreground=clr1,
+                             font=(ft, 15),
+                             justify='center',
+                             command=display_report
+                             )
+            rep_btn.pack(side='right', padx=50)
 
             vis_btn = Button(country_page,
                              text='Visualize Data',
@@ -192,9 +252,9 @@ def home_next():
                             justify='center',
                             command=dload_data
                             )
-            dl_btn.pack(padx=200 ,side='left')
-
+            dl_btn.pack(padx=50, side='right')
             country_page.mainloop()
+
             ################ end country page #################
 
         elif clicked_region.get() != 'Choose a Region':
@@ -262,7 +322,7 @@ def home_next():
             ################ end region page #################
 
         else:
-            messagebox.showinfo('ERROR MSG')
+            messagebox.showinfo(title = 'ERROR', message='Please Select country or region ! ')
 
     next_btn = Button(country_region_window,
                       text='Next',
