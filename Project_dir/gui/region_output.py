@@ -7,6 +7,10 @@ from Project_dir.api.data_analysis import *
 from tkinter import *
 from region_input import region_input
 from tkinter import ttk
+import pandasql as psql
+import mysql.connector
+
+
 
 
 bkg1 = '#787A91'
@@ -25,22 +29,7 @@ def region_data():
 
     def Visualize_data():
         pass
-        # path = 'topics.csv'
-        # data_set = pd.read_csv(path).head()
-        # # print(data_set.head())
-        #
-        # x = data_set['survivors'].values.reshape(-1, 1)
-        # y = data_set['TotalDeaths'].values.reshape(-1, 1)
-        #
-        # x_var = data_set['TotalDeaths'].values
-        # y_var = data_set['survivors'].values
-        #
-        # sns.barplot(data=data_set, x=x_var, y=y_var, ci=None)
-        # plt.xticks(rotation=90)
-        #
-        # # plt.bar(x_var, y_var, width=0.8, bottom=None, align='center', data=data_set)
-        #
-        # plt.show()
+
 
     def dload_data():
         return 'Hi Shatha'
@@ -66,7 +55,7 @@ def region_data():
                           foreground=clr1,
                           font=(ft, 15),
                           justify='center',
-                          command=region_input()
+                          command=region_input
                           )
         back_btn.pack(pady=25)
 
@@ -78,7 +67,7 @@ def region_data():
                         foreground=clr1,
                         font=(ft, 15),
                         justify='center',
-                        command=dload_data()
+                        command=dload_data
                         )
         dl_btn.pack()
 

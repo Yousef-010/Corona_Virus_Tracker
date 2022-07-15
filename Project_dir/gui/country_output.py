@@ -5,7 +5,7 @@ import seaborn as sns
 sns.set(style='white', color_codes=True)
 from Project_dir.api.data_analysis import *
 from tkinter import *
-from region_input import region_input
+import region_input
 from tkinter import ttk
 
 
@@ -50,7 +50,7 @@ def country_data():
                           foreground=clr1,
                           font=(ft, 15),
                           justify='center',
-                          command=region_input()
+                          command=region_input.region_input
                           )
         back_btn.pack()
 

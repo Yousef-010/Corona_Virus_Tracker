@@ -1,8 +1,8 @@
 import tkinter
 import home
 import pandas as pd
-# import country_output
-# import region_output
+import country_output
+import region_output
 from tkinter import *
 import Project_dir.api.data_analysis as da
 
