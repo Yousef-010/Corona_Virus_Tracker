@@ -66,7 +66,7 @@ def home_next():
                  'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland',
                  'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea',
                  'Guinea-Bissau', 'Guyana', 'Haiti', 'Holy See (Vatican City State)', 'Honduras', 'Hungary', 'Iceland',
-                 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica',
+                 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Palestinian', 'Italy', 'Jamaica',
                  'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea (North)', 'Korea (South)', 'Kuwait',
                  'Kyrgyzstan', 'Lao PDR', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein',
                  'Lithuania', 'Luxembourg', 'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives',
@@ -92,8 +92,9 @@ def home_next():
     # country_choice = clicked_country.get()
 
     regions = [
-        'Middle East',
-        'Europe'
+        'Middle_East',
+        'Western_Europe',
+        'Other'
     ]
 
     clicked_region = StringVar(country_region_window)
@@ -122,20 +123,21 @@ def home_next():
                 data_set = pd.read_csv('topics.csv')
                 path = filedialog.askdirectory()
                 selected_country = data_set[data_set.Name == clicked_country.get()]
-                selected_df = {'Name': selected_country['Name'],
-                               'TotalConfirmed': selected_country['TotalConfirmed'],
-                               'TotalDeaths': selected_country['TotalDeaths'],
-                               'NewConfirmed': selected_country['NewConfirmed'],
-                               'NewDeaths': selected_country['NewDeaths'],
-                               'survivors': selected_country['survivors'],
-                               'Fatality_ratio': selected_country['Fatality_ratio'],
-                               'Region': selected_country['Region'],
-                               'Date': selected_country['Date'],
-                               }
-                selected_df = pd.DataFrame(selected_df)
+                # selected_df = {'Name': selected_country['Name'],
+                #                'TotalConfirmed': selected_country['TotalConfirmed'],
+                #                'TotalDeaths': selected_country['TotalDeaths'],
+                #                'NewConfirmed': selected_country['NewConfirmed'],
+                #                'NewDeaths': selected_country['NewDeaths'],
+                #                'survivors': selected_country['survivors'],
+                #                'Fatality_ratio': selected_country['Fatality_ratio'],
+                #                'Region': selected_country['Region'],
+                #                'Date': selected_country['Date'],
+                #                }
+                # selected_df = pd.DataFrame(selected_df)
+                selected_df = pd.DataFrame(selected_country)
                 selected_df.to_csv(f'{path}.csv')
-                messagebox.showinfo(title= f'{clicked_country.get()} Download', message='Your Data Has been downloaded successfully' )
-
+                messagebox.showinfo(title=f'{clicked_country.get()} Download',
+                                    message='Your Data Has been downloaded successfully')
             def back_function():
                 country_page.destroy()
 
@@ -145,13 +147,13 @@ def home_next():
 
                 sns.set(style='white', color_codes=True)
                 data_set = pd.read_csv('topics.csv')
-                TC = data_set[data_set.Name == clicked_country.get()].iloc[0]['TotalConfirmed']
+                TC = data_set[data_set.Name == clicked_country.get()].iloc[0]['TotalDeaths']
                 TD = data_set[data_set.Name == clicked_country.get()].iloc[0]['survivors']
-                TS = data_set[data_set.Name == clicked_country.get()].iloc[0]['Fatality_ratio']
+                # TS = data_set[data_set.Name == clicked_country.get()].iloc[0]['Fatality_ratio']
 
-                labels = 'TotalConfirmed', 'survivors', 'Fatality_ratio'
-                sizes = [TC, TD, TS * 10000]
-                explode = (0, 0, 0)
+                labels = 'TotalDeaths', 'survivors'
+                sizes = [TC, TD]
+                explode = (0, 0)
                 fig1, ax1 = plt.subplots()
                 ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.0f%%',
                         shadow=True, startangle=90)
@@ -160,32 +162,36 @@ def home_next():
 
             def display_data():
                 data_set = pd.read_csv('topics.csv')
-                selected_country = data_set[data_set.Name == clicked_country.get()]
-                selected_df = {'Name': selected_country['Name'],
-                               'TotalConfirmed': selected_country['TotalConfirmed'],
-                               'TotalDeaths': selected_country['TotalDeaths'],
-                               'NewConfirmed': selected_country['NewConfirmed'],
-                               'NewDeaths': selected_country['NewDeaths'],
-                               'survivors': selected_country['survivors'],
-                               'Fatality_ratio': selected_country['Fatality_ratio'],
-                               'Region': selected_country['Region'],
-                               'Date': datetime.now().strftime("%Y-%m-%d %H:%M")
-                               }
-                selected_df = pd.DataFrame(selected_df)
+                # selected_country = data_set[data_set.Name == clicked_country.get()]
+                data_set = data_set[data_set.Name == clicked_country.get()]
+
+                # selected_df = {'Name': selected_country['Name'],
+                #                'TotalConfirmed': selected_country['TotalConfirmed'],
+                #                'TotalDeaths': selected_country['TotalDeaths'],
+                #                'NewConfirmed': selected_country['NewConfirmed'],
+                #                'NewDeaths': selected_country['NewDeaths'],
+                #                'survivors': selected_country['survivors'],
+                #                'Fatality_ratio': selected_country['Fatality_ratio'],
+                #                'Region': selected_country['Region'],
+                #                'Date': datetime.now().strftime("%Y-%m-%d %H:%M")
+                #                }
+                # selected_df = pd.DataFrame(selected_df)
 
                 tree = ttk.Treeview(country_page, padding=5, height=3, selectmode='browse')
                 scrollbar = Scrollbar(country_page, orient="horizontal", width=20)
                 tree.config(xscrollcommand=scrollbar.set)
                 scrollbar.config(command=tree.xview)
 
-                tree["column"] = list(selected_df.columns)
+                # tree["column"] = list(selected_df.columns)
+                tree["column"] = list(data_set.columns)
                 tree["show"] = "headings"
                 tree.column("# 0.5", anchor=CENTER, stretch=NO, width=50)
                 tree.column("# 0.5", anchor=CENTER, stretch=NO)
                 for col in tree["column"]:
                     tree.heading(col, text=col)
 
-                df_rows = selected_df.to_numpy().tolist()
+                # df_rows = selected_df.to_numpy().tolist()
+                df_rows = data_set.to_numpy().tolist()
                 for row in df_rows:
                     tree.insert("", "end", values=row)
 
@@ -197,15 +203,18 @@ def home_next():
             def display_report():
                 data_set = pd.read_csv('topics.csv')
                 selected_country = data_set[data_set.Name == clicked_country.get()]
+                name = {selected_country['Name'].values[0]}
+                F_R_today = round(((selected_country['NewDeaths'].values[0]/selected_country['NewConfirmed'].values[0])*100), 2)
+                surviving_ratio = round((((selected_country['NewConfirmed'].values[0]-selected_country['NewDeaths'].values[0])/(selected_country['NewConfirmed'].values[0]))*100),2)
                 if selected_country['NewConfirmed'].values[0] > 0:
 
                     messagebox.showinfo(title= f'{clicked_country.get()}  report',
-                                        message=f'''Today is {datetime.now().strftime("%Y-%m-%d %H:%M")} \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of contracting the virus is  {round(((1/selected_country['NewConfirmed'].values[0])*100),2 )} % \nThe possibility of your death is {round(((selected_country['NewDeaths'].values[0]/selected_country['NewConfirmed'].values[0])*100),2)} % \nThe health system in {selected_country['Name'].values[0]} not good 
+                                        message=f'''Today is {datetime.now().strftime("%Y-%m-%d %H:%M")} \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of surviving from the virus for today is  {surviving_ratio} % \nThe possibility of your death is {F_R_today} % \nThe health system in {name} not good 
                         
                     ''')
                 else:
                     messagebox.showinfo(title= f'{clicked_country.get()}  report',
-                                        message=f'''Today is  {datetime.now().strftime("%Y-%m-%d %H:%M")} \nThe possibility of contracting the virus is {round(((selected_country['NewConfirmed'].values[0])*100),2 )} % \nIf you want to visit {selected_country['Name'].values[0]} you can do it \nEnjoy spending time there :) ''')
+                                        message=f'''Today is  {datetime.now().strftime("%Y-%m-%d %H:%M")} \nThere is no new cases for today in {name} \nEnjoy spending time there :) ''')
 
             rep_btn = Button(country_page,
                              text='Show Report',
@@ -270,17 +279,83 @@ def home_next():
             region_page.title('Region_page')
             region_page.minsize(width=900, height=600)
 
-            def display():
-                pass
+            def display_region_data():
+                data_set = pd.read_csv('topics.csv')
+                selected_region = clicked_region.get()
+                data_set = data_set[data_set.Region == selected_region]
+
+                tree = ttk.Treeview(region_page, padding=5, height=14, selectmode='browse')
+                scrollbar = Scrollbar(region_page, orient="horizontal", width=20)
+                tree.config(xscrollcommand=scrollbar.set)
+                scrollbar.config(command=tree.xview)
+
+                tree["column"] = list(data_set.columns)
+                tree["show"] = "headings"
+                tree.column("# 0.5", anchor=CENTER, stretch=NO, width=50)
+                tree.column("# 0.5", anchor=CENTER, stretch=NO)
+                for col in tree["column"]:
+                    tree.heading(col, text=col)
+
+                df_rows = data_set.to_numpy().tolist()
+                for row in df_rows:
+                    tree.insert("", "end", values=row)
+
+                tree.pack()
+                scrollbar.pack(fill='both')
+
+            display_region_data()
 
             def back_function():
                 region_page.destroy()
 
-            def Visualize_data():
-                pass
+            def Visualize_region_data():
+                import matplotlib.pyplot as plt
+                import seaborn as sns
 
-            def dload_data():
-                pass
+                data_set = pd.read_csv('topics.csv')
+                selected_region = clicked_region.get()
+                data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio', ascending=False)
+
+                sns.barplot(data=data_set, x='Fatality_ratio', y='Name', ci=None)
+                plt.xticks(rotation=90)
+                plt.show()
+
+            def dload_region_data():
+                data_set = pd.read_csv('topics.csv')
+                selected_region = clicked_region.get()
+                data_set = data_set[data_set.Region == selected_region]
+                path = filedialog.askdirectory()
+
+                selected_r_df = pd.DataFrame(data_set)
+                selected_r_df.to_csv(f'{path}.csv')
+                messagebox.showinfo(title=f'{selected_region} Download',
+                                    message='Your Data Has been downloaded successfully')
+
+            def display_region_report():
+                data_set = pd.read_csv('topics.csv')
+                selected_region = clicked_region.get()
+                data_set = data_set[data_set.Region == selected_region]
+                minimum = data_set['Fatality_ratio'].min()
+                maximum = data_set['Fatality_ratio'].max()
+                avg = round((data_set['TotalDeaths'].mean()), 2)
+                survivors = round(((data_set['survivors']/data_set['TotalConfirmed']*100).mean()), 2)
+                n_min = data_set[(data_set['Fatality_ratio'] == minimum)]['Name'].values[0]
+                n_max = data_set[(data_set['Fatality_ratio'] == maximum)]['Name'].values[0]
+                region = selected_region
+
+                messagebox.showinfo(title=f'{selected_region}', message=f'''Today date is, {datetime.now().strftime('%Y-%m-%d %H:%M')} \n{n_min} is the safest country to visit in {region} \nwith Fatality_ratio = {minimum}% \nFor your safety avoid visiting {n_max} \nwith Fatality_ratio =  {maximum}%  \nThe average of death cases in {region} = {avg}  \nwith survival rate = {survivors}%''')
+
+            rep_btn = Button(region_page,
+                             text='Show Report',
+                             bg=clr2,
+                             height=2,
+                             width=15,
+                             foreground=clr1,
+                             font=(ft, 15),
+                             justify='center',
+                             command=display_region_report
+                             )
+            rep_btn.pack(side='right', padx=50)
 
             vis_btn = Button(region_page,
                              text='Visualize Data',
@@ -290,7 +365,7 @@ def home_next():
                              foreground=clr1,
                              font=(ft, 15),
                              justify='center',
-                             command=Visualize_data
+                             command=Visualize_region_data
                              )
             vis_btn.pack(side='right')
 
@@ -313,7 +388,7 @@ def home_next():
                             foreground=clr1,
                             font=(ft, 15),
                             justify='center',
-                            command=dload_data
+                            command=dload_region_data
                             )
             dl_btn.pack(side='left', padx=200)
 
