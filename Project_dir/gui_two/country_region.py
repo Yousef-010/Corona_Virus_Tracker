@@ -1,5 +1,4 @@
 import os
-import sys
 from datetime import datetime
 from tkinter import *
 from tkinter import messagebox, filedialog
@@ -7,7 +6,6 @@ from tkinter import ttk
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-from PIL import ImageTk
 
 from Project_dir.api.data_analysis import *
 import main
@@ -17,9 +15,12 @@ import main
 bkg1 = '#1d2b2c'  # Background color
 clr1 = '#0b3b40'  # Label Box color
 clr2 = '#9fe3de'  # Font color
+clr3 = '#74d1b6'
 buttons = '#0b3b40'  # Buttons Background color
-ft = 'Times'  # Font type
-tc = '#041315'  # Table Background color
+ft = 'Times'  # Primary Font type
+ft2 = 'courier'  # Secondary Font type
+ftt = ('Times', 17),
+tble_clr = '#041315'  # Table Background color
 data_set = pd.read_csv('topics.csv')
 
 
@@ -27,21 +28,31 @@ data_set = pd.read_csv('topics.csv')
 # *************** Render ****************
 country_region_window = Tk()
 country_region_window.title('Country/Region Input')
-country_region_window.configure(bg=bkg1)
-country_region_window.minsize(width=500, height=300)
+country_region_window.configure(bg=clr3)
+country_region_window.minsize(width=1000, height=600)
 
-region_input_instruction = 'Hi ' + main.user_name.get() + "\nKindly choose a country or a region \nto view from the " \
-                                                     "dropdown list,then click Next "
+# country_region_bg_img = ImageTk.PhotoImage(file="country_region_input_2.jpg")
+# img_label_2 = Label(country_region_window, image=country_region_bg_img)
+# img_label_2.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+if main.user_name.get() == 'Please Enter Your Name':
+    region_input_instruction = "Kindly Choose a Country or a Region \nto View From The " \
+                               "Dropdown List, Then Click Next"
+else:
+    region_input_instruction = 'Hello ' + main.user_name.get().capitalize() + "\nKindly Choose a Country or a " \
+                                                                         "Region \nto View From The " \
+                                                                         "Dropdown List, Then Click Next"
+
 r_c_instruction_label = Label(country_region_window,
                               text=region_input_instruction,
-                              pady=25,
+                              pady=50,
                               padx=25,
                               justify='center',
                               border=10,
-                              background=clr1,
-                              foreground=clr2,
+                              background=clr3,
+                              foreground=clr1,
                               borderwidth=2,
-                              font=(ft, 25))
+                              font=('andalus', 30))
 
 r_c_instruction_label.pack(pady=25)
 
@@ -57,6 +68,7 @@ countries = data_set['Name'].values
 clicked_country = StringVar(country_region_window)
 clicked_country.set('Choose a Country')
 country_drop_list = OptionMenu(country_region_window, clicked_country, *countries)
+country_drop_list.configure(bg=buttons, fg=clr3, font=('Times', 17))
 country_drop_list.pack(pady=25, padx=25)
 
 regions = [
@@ -67,6 +79,7 @@ regions = [
 
 clicked_region = StringVar(country_region_window)
 reg_drop_list = OptionMenu(country_region_window, clicked_region, *regions)
+reg_drop_list.configure(bg=buttons, fg=clr3, font=('Times', 17))
 clicked_region.set('Choose a Region')
 
 reg_drop_list.pack(pady=25, padx=25)
@@ -156,12 +169,19 @@ def country_region_next():
                                        selected_country['NewDeaths'].values[0]) / (
                                           selected_country['NewConfirmed'].values[0])) * 100), 2)
             if selected_country['NewConfirmed'].values[0] > 0:
-
                 messagebox.showinfo(title=f'{clicked_country.get()}  report',
-                                    message=f'Today is {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As of {datetime.now().strftime("%H:%M%p")} today: \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of surviving from the virus for today is  {surviving_ratio} % \nThe possibility of your death is {F_R_today} % \nThe health system in {name} not good ')
+                                    message=f'Today is {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As '
+                                            f'of {datetime.now().strftime("%H:%M%p")}: \nWe don\'t '
+                                            f'recommend visiting {clicked_country.get()} right '
+                                            f'now. \nThe probability of surviving the pandemic today stands '
+                                            f'at {surviving_ratio}% \nThe probability of fatal infection '
+                                            f'is {F_R_today}% \nThe health situation in {name} is not optimal.')
             else:
                 messagebox.showinfo(title=f'{clicked_country.get()}  report',
-                                    message=f'Today is  {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As of {datetime.now().strftime("%H:%M%p")} today: \nThere are no new cases for today in {name} \nEnjoy your time there :) ')
+                                    message=f'Today is  {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As '
+                                            f'of {datetime.now().strftime("%H:%M%p")}: \nThere'
+                                            f' are no new confirmed cases of COVID infection'
+                                            f'  in {name} \nEnjoy your time there :) -_* ^^ ')
 
         rep_btn = Button(country_page,
                          text='Show Report',
@@ -293,7 +313,12 @@ def country_region_next():
             region = selected_region
 
             messagebox.showinfo(title=f'{region}',
-                                message=f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As of {datetime.now().strftime('%H:%M%p')}: \n{n_min} is the safest country to visit in {region} \nwith Fatality_ratio = {minimum}% \nFor your safety avoid visiting {n_max} \nwith Fatality ratio =  {maximum}%  \nThe average of death cases in {region} = {avg}  \nwith survival rate = {survivors}% "
+                                message=f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As"
+                                        f" of {datetime.now().strftime('%H:%M%p')}: \n{n_min} is the safest country"
+                                        f" to visit in {region} with a fatality ratio of {minimum}%.\nFor your "
+                                        f"safety avoid visiting {n_max} where the fatality ratio stands "
+                                        f"at {maximum}% \nThe average of death cases in {region} = {avg}\nwith "
+                                        f"survival rate = {survivors}% "
                                 )
 
         rep_btn = Button(region_page,
@@ -341,14 +366,14 @@ def country_region_next():
                         justify='center',
                         command=dload_region_data
                         )
-        dl_btn.pack(side='left', padx=200)
+        dl_btn.pack(padx=50, side='right')
 
         region_page.mainloop()
 
         # ############### end region page #################
 
     else:
-        messagebox.showinfo(title='ERROR', message='Please Select country or region ! ')
+        messagebox.showinfo(title='ERROR', message='Please Select a Country or a Region! ')
 
 
 next_country_region_window_button = Button(country_region_window,
@@ -358,10 +383,10 @@ next_country_region_window_button = Button(country_region_window,
                                            height=2,
                                            width=15,
                                            foreground=clr2,
-                                           font=(ft, 15),
+                                           font=ftt,
                                            justify='center')
 
-next_country_region_window_button.pack(side='right', pady=50)
+next_country_region_window_button.pack(side='right', pady=50, padx=75)
 
 back_country_region_window_button = Button(country_region_window,
                                            text='Back',
@@ -370,10 +395,10 @@ back_country_region_window_button = Button(country_region_window,
                                            height=2,
                                            width=15,
                                            foreground=clr2,
-                                           font=(ft, 15),
+                                           font=ftt,
                                            justify='center')
 
-back_country_region_window_button.pack(side='left', pady=50)
+back_country_region_window_button.pack(side='left', pady=50, padx=75)
 
 main.root.destroy()
 
