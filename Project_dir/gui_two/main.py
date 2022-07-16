@@ -1,12 +1,11 @@
 from tkinter import *
 from tkinter import ttk
-# from pandastable import Table, TableModel
-# from tkinter.filedialog import asksaveasfilename
 from tkinter import messagebox, filedialog
 from datetime import datetime
-# import pandas as pd
 from Project_dir.api.data_analysis import *
-from PIL import Image, ImageTk
+from PIL import ImageTk
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # *************** Global Style Variables ****************
 bkg1 = '#1d2b2c'  # Background color
@@ -15,25 +14,14 @@ clr2 = '#9fe3de'  # Font color
 buttons = '#0b3b40'  # Buttons Background color
 ft = 'Times'  # Font type
 tc = '#041315'  # Table Background color
+data_set = pd.read_csv('topics.csv')
 
 root = Tk()
 root.title('COVID Live Tracker')
 root.configure(bg=bkg1)
-root.minsize(width=900, height=700)
+root.minsize(width=900, height=650)
 
 bg_img = ImageTk.PhotoImage(file="CV_4.jpg")
-# can = Canvas(root)
-# can.place(relx=0, rely=0, relwidth=1, relheight=1)
-# # add image
-# can.create_image(0, 0, image=bg_img, anchor="nw")
-# can.create_text(450,
-#                 200,
-#                 text="Welcome To COVID Live Tracker\nYour COVID Related Stats Viewer, Analyzer and Downloader \nTo "
-#                      "Proceed, Please Click 'Next'",
-#                 font=(ft, 20),
-#                 fill=clr2,
-#                 justify='center')
-
 
 # ************** Add image BackGround **************
 img_label = Label(root, image=bg_img)
@@ -76,41 +64,12 @@ def home_next():
     def country_region_back():
         country_region_window.destroy()
 
-    countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antarctica', 'Antigua and Barbuda',
-                 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh',
-                 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina',
-                 'Botswana', 'Brazil', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia',
-                 'Cameroon', 'Canada', 'Cape Verde', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia',
-                 'Comoros', 'Congo (Brazzaville)', 'Congo (Kinshasa)', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus',
-                 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador',
-                 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland',
-                 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea',
-                 'Guinea-Bissau', 'Guyana', 'Haiti', 'Holy See (Vatican City State)', 'Honduras', 'Hungary', 'Iceland',
-                 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Palestinian', 'Italy',
-                 'Jamaica',
-                 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea (North)', 'Korea (South)', 'Kuwait',
-                 'Kyrgyzstan', 'Lao PDR', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein',
-                 'Lithuania', 'Luxembourg', 'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives',
-                 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico',
-                 'Micronesia, Federated States of', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco',
-                 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger',
-                 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palestinian Territory', 'Panama',
-                 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar',
-                 'Republic of Kosovo', 'Romania', 'Russian Federation', 'Rwanda',
-                 'Saint Lucia', 'Saint Vincent and Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe',
-                 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia',
-                 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname',
-                 'Swaziland', 'Sweden', 'Switzerland', 'Syrian Arab Republic (Syria)', 'Taiwan, Republic of China',
-                 'Tajikistan', 'Tanzania, United Republic of', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga',
-                 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Uganda', 'Ukraine', 'United Arab Emirates',
-                 'United Kingdom', 'United States of America', 'Uruguay', 'Uzbekistan', 'Vanuatu',
-                 'Viet Nam', 'Yemen', 'Zambia', 'Zimbabwe']
+    countries = data_set['Name'].values
 
     clicked_country = StringVar(country_region_window)
     clicked_country.set('Choose a Country')
     country_drop_list = OptionMenu(country_region_window, clicked_country, *countries)
     country_drop_list.pack(pady=25, padx=25)
-    # country_choice = clicked_country.get()
 
     regions = [
         'Middle_East',
@@ -121,11 +80,10 @@ def home_next():
     clicked_region = StringVar(country_region_window)
     reg_drop_list = OptionMenu(country_region_window, clicked_region, *regions)
     clicked_region.set('Choose a Region')
-    # region_choice = clicked_region.get()
+
     reg_drop_list.pack(pady=25, padx=25)
 
     def country_region_next():
-
         # ############### start country_region_window  #################
 
         if clicked_country.get() != 'Choose a Country':
@@ -140,20 +98,9 @@ def home_next():
             # ##### country Table
 
             def dload_data():
-                data_set = pd.read_csv('topics.csv')
                 path = filedialog.askdirectory()
                 selected_country = data_set[data_set.Name == clicked_country.get()]
-                # selected_df = {'Name': selected_country['Name'],
-                #                'TotalConfirmed': selected_country['TotalConfirmed'],
-                #                'TotalDeaths': selected_country['TotalDeaths'],
-                #                'NewConfirmed': selected_country['NewConfirmed'],
-                #                'NewDeaths': selected_country['NewDeaths'],
-                #                'survivors': selected_country['survivors'],
-                #                'Fatality_ratio': selected_country['Fatality_ratio'],
-                #                'Region': selected_country['Region'],
-                #                'Date': selected_country['Date'],
-                #                }
-                # selected_df = pd.DataFrame(selected_df)
+
                 selected_df = pd.DataFrame(selected_country)
                 selected_df.to_csv(f'{path}.csv')
                 messagebox.showinfo(title=f'{clicked_country.get()} Download',
@@ -163,14 +110,8 @@ def home_next():
                 country_page.destroy()
 
             def visualize_data():
-                import matplotlib.pyplot as plt
-                import seaborn as sns
-
-                sns.set(style='white', color_codes=True)
-                data_set = pd.read_csv('topics.csv')
                 TC = data_set[data_set.Name == clicked_country.get()].iloc[0]['TotalDeaths']
                 TD = data_set[data_set.Name == clicked_country.get()].iloc[0]['survivors']
-                # TS = data_set[data_set.Name == clicked_country.get()].iloc[0]['Fatality_ratio']
 
                 labels = 'TotalDeaths', 'survivors'
                 sizes = [TC, TD]
@@ -183,20 +124,7 @@ def home_next():
 
             def display_data():
                 data_set = pd.read_csv('topics.csv')
-                # selected_country = data_set[data_set.Name == clicked_country.get()]
                 data_set = data_set[data_set.Name == clicked_country.get()]
-
-                # selected_df = {'Name': selected_country['Name'],
-                #                'TotalConfirmed': selected_country['TotalConfirmed'],
-                #                'TotalDeaths': selected_country['TotalDeaths'],
-                #                'NewConfirmed': selected_country['NewConfirmed'],
-                #                'NewDeaths': selected_country['NewDeaths'],
-                #                'survivors': selected_country['survivors'],
-                #                'Fatality_ratio': selected_country['Fatality_ratio'],
-                #                'Region': selected_country['Region'],
-                #                'Date': datetime.now().strftime("%Y-%m-%d %H:%M")
-                #                }
-                # selected_df = pd.DataFrame(selected_df)
 
                 # ************** Start Styling Table **************
                 style = ttk.Style()
@@ -212,15 +140,11 @@ def home_next():
                 tree.config(xscrollcommand=scrollbar.set)
                 scrollbar.config(command=tree.xview)
 
-                # tree["column"] = list(selected_df.columns)
                 tree["column"] = list(data_set.columns)
                 tree["show"] = "headings"
-                tree.column("# 0.5", anchor=CENTER, stretch=NO, width=50)
-                tree.column("# 0.5", anchor=CENTER, stretch=NO)
                 for col in tree["column"]:
                     tree.heading(col, text=col)
 
-                # df_rows = selected_df.to_numpy().tolist()
                 df_rows = data_set.to_numpy().tolist()
                 for row in df_rows:
                     tree.insert("", "end", values=row)
@@ -231,12 +155,13 @@ def home_next():
             display_data()
 
             def display_report():
-                data_set = pd.read_csv('topics.csv')
                 selected_country = data_set[data_set.Name == clicked_country.get()]
                 name = selected_country['Name'].values[0]
                 F_R_today = round(
                     ((selected_country['NewDeaths'].values[0] / selected_country['NewConfirmed'].values[0]) * 100), 2)
-                surviving_ratio = round((((selected_country['NewConfirmed'].values[0] - selected_country['NewDeaths'].values[0]) / (selected_country['NewConfirmed'].values[0])) * 100), 2)
+                surviving_ratio = round((((selected_country['NewConfirmed'].values[0] -
+                                           selected_country['NewDeaths'].values[0]) / (
+                                              selected_country['NewConfirmed'].values[0])) * 100), 2)
                 if selected_country['NewConfirmed'].values[0] > 0:
 
                     messagebox.showinfo(title=f'{clicked_country.get()}  report',
@@ -269,17 +194,17 @@ def home_next():
                              )
             vis_btn.pack(side='right', pady=50)
 
-            back_btn = Button(country_page,
-                              text='Back',
-                              bg=buttons,
-                              height=2,
-                              width=15,
-                              foreground=clr2,
-                              font=(ft, 15),
-                              justify='center',
-                              command=back_function
-                              )
-            back_btn.pack(side='left')
+            back_country_button = Button(country_page,
+                                         text='Back',
+                                         bg=buttons,
+                                         height=2,
+                                         width=15,
+                                         foreground=clr2,
+                                         font=(ft, 15),
+                                         justify='center',
+                                         command=back_function
+                                         )
+            back_country_button.pack(side='left')
 
             dl_btn = Button(country_page, text='Download',
                             bg=buttons,
@@ -325,8 +250,6 @@ def home_next():
 
                 tree["column"] = list(data_set.columns)
                 tree["show"] = "headings"
-                tree.column("# 0.5", anchor=CENTER, stretch=NO, width=50)
-                tree.column("# 0.5", anchor=CENTER, stretch=NO)
                 for col in tree["column"]:
                     tree.heading(col, text=col)
 
@@ -343,13 +266,9 @@ def home_next():
                 region_page.destroy()
 
             def Visualize_region_data():
-                import matplotlib.pyplot as plt
-                import seaborn as sns
-
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
-                data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio',
-                                                                                             ascending=False)
+                data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio', ascending=False)
 
                 sns.barplot(data=data_set, x='Fatality_ratio', y='Name', ci=None)
                 plt.xticks(rotation=90)
@@ -406,17 +325,17 @@ def home_next():
                              )
             vis_btn.pack(side='right')
 
-            back_btn = Button(region_page,
-                              text='Back',
-                              bg=buttons,
-                              height=2,
-                              width=15,
-                              foreground=clr2,
-                              font=(ft, 15),
-                              justify='center',
-                              command=back_function
-                              )
-            back_btn.pack(side='left')
+            back_region_button = Button(region_page,
+                                        text='Back',
+                                        bg=buttons,
+                                        height=2,
+                                        width=15,
+                                        foreground=clr2,
+                                        font=(ft, 15),
+                                        justify='center',
+                                        command=back_function
+                                        )
+            back_region_button.pack(side='left')
 
             dl_btn = Button(region_page, text='Download',
                             bg=buttons,
@@ -436,29 +355,29 @@ def home_next():
         else:
             messagebox.showinfo(title='ERROR', message='Please Select country or region ! ')
 
-    next_btn = Button(country_region_window,
-                      text='Next',
-                      command=country_region_next,
-                      bg=buttons,
-                      height=2,
-                      width=15,
-                      foreground=clr2,
-                      font=(ft, 15),
-                      justify='center')
+    next_country_region_window_button = Button(country_region_window,
+                                               text='Next',
+                                               command=country_region_next,
+                                               bg=buttons,
+                                               height=2,
+                                               width=15,
+                                               foreground=clr2,
+                                               font=(ft, 15),
+                                               justify='center')
 
-    next_btn.pack(side='right', pady=50)
+    next_country_region_window_button.pack(side='right', pady=50)
 
-    back_btn = Button(country_region_window,
-                      text='Back',
-                      command=country_region_back,
-                      bg=buttons,
-                      height=2,
-                      width=15,
-                      foreground=clr2,
-                      font=(ft, 15),
-                      justify='center')
+    back_country_region_window_button = Button(country_region_window,
+                                               text='Back',
+                                               command=country_region_back,
+                                               bg=buttons,
+                                               height=2,
+                                               width=15,
+                                               foreground=clr2,
+                                               font=(ft, 15),
+                                               justify='center')
 
-    back_btn.pack(side='left', pady=50)
+    back_country_region_window_button.pack(side='left', pady=50)
 
     root.destroy()
 
@@ -478,34 +397,18 @@ user_name = Entry(img_label, width=25,
 user_name.place(x=250, y=450)
 user_name.insert(0, 'Please Enter Your Name')
 
-next_btn = Button(img_label,
-                  text='Next',
-                  command=home_next,
-                  bg=buttons,
-                  height=2,
-                  width=15,
-                  foreground=clr2,
-                  font=(ft, 15),
-                  justify='center'
-                  )
+next_button = Button(img_label,
+                     text='Next',
+                     command=home_next,
+                     bg=buttons,
+                     height=2,
+                     width=15,
+                     foreground=clr2,
+                     font=(ft, 15),
+                     justify='center'
+                     )
 
-next_btn.place(x=350, y=550)
-#
-# def resizer(e):
-#     global bg, re_bg, new_bg
-#     bg = Image.open('CV_4.jpg')
-#     re_bg = bg.resize((e.width, e.height), Image.ANTIALIAS)
-#     new_bg = ImageTk.PhotoImage(re_bg)
-#     can.create_image(0, 0, image=new_bg, anchor="nw")
-#     can.create_text(450,
-#                     200,
-#                     text="Welcome To COVID Live Tracker\nYour COVID Related Stats Viewer, \nAnalyzer and Downloader \nTo "
-#                          "Proceed, Please Click 'Next'",
-#                     font=(ft, 25),
-#                     fill=clr2,
-#                     justify='center')
-
+next_button.place(x=350, y=550)
 
 if __name__ == '__main__':
-    # root.bind('<Configure>', resizer)
     root.mainloop()
