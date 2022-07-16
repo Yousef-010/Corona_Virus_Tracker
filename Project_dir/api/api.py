@@ -24,7 +24,7 @@ def fill_data_into_arrays():
     country_total_confirmed = []
     country_total_deaths = []
     country_date = []
-    middle_east_regions = ['Algeria', 'United Arab Emirates', 'Amman', 'Egypt', 'Palestine', 'the two seas', 'Diameter', 'Kuwait', 'Lebanon', 'Libya', 'Mauritania', 'Morocco', 'Saudi Arab', 'Sudan', 'Tunisia', 'Turkey', 'Syria', 'To whom', 'Iraq', 'Iran', 'Israel', 'Jordan']
+    middle_east_regions = ['Algeria', 'United Arab Emirates', 'Amman', 'Egypt', 'Palestine', 'the two seas', 'Diameter', 'Kuwait', 'Lebanon', 'Libya', 'Mauritania', 'Morocco', 'Saudi Arab', 'Sudan', 'Tunisia', 'Turkey', 'Syria', 'To whom', 'Iraq', 'Iran', 'Israel', 'Jordan', 'Yemen']
     western_europe_regions = ['Cyprus', 'Albania', 'Bulgaria', 'Estonia', 'Poland', 'Bosnia and Herzegovina', 'Cech', 'Croatia', 'Latvia', 'Lithuania', 'Romania', 'Macedonia', 'Serbia and Montenegro', 'Slovakia', 'Slovenia', 'Hungary', 'iranda', 'Andorra', 'Austria', 'Belgium', 'Iceland', 'Denmark', 'Germany', 'France', 'Finland', 'Holland', 'Luxembourg', 'Ligtenstein', 'Malta', 'Monaco', 'Norway', 'Portugal', 'Sweden', 'Switzerland', 'Spain', 'Greece', 'Italia', 'Britain']
     region = []
     total_survival = []
@@ -41,11 +41,11 @@ def fill_data_into_arrays():
         new_deaths = cases['NewDeaths']
 
         if name in middle_east_regions:
-            region.append('Middle East')
+            region.append('Middle_East')
         elif name in western_europe_regions:
-            region.append('Western Europe')
+            region.append('Western_Europe')
         else:
-            region.append('other')
+            region.append('Other')
 
         country_names.append(name)
         country_total_confirmed.append(total_confirmed)
