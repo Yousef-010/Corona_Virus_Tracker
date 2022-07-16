@@ -1,33 +1,55 @@
 from tkinter import *
 from tkinter import ttk
-from pandastable import Table, TableModel
+# from pandastable import Table, TableModel
 # from tkinter.filedialog import asksaveasfilename
 from tkinter import messagebox, filedialog
 from datetime import datetime
-import pandas as pd
+# import pandas as pd
 from Project_dir.api.data_analysis import *
+from PIL import Image, ImageTk
 
-bkg1 = '#787A91'
-clr1 = '#EEEEEE'
-clr2 = '#141E61'
+# *************** Global Style Variables ****************
+bkg1 = '#1d2b2c'  # Background color
+clr1 = '#0b3b40'  # Label Box color
+clr2 = '#9fe3de'  # Font color
+buttons = '#0b3b40'  # Buttons Background color
+ft = 'Times'  # Font type
+tc = '#041315'  # Table Background color
 
 root = Tk()
 root.title('COVID Live Tracker')
 root.configure(bg=bkg1)
-root.minsize(width=900, height=300)
+root.minsize(width=900, height=700)
 
-welcome = Label(root, text="""Welcome To COVID Live Tracker
-Your COVID Related Stats Viewer, Analyzer and Downloader 
- To Proceed, Please Click 'Next'""",
+bg_img = ImageTk.PhotoImage(file="CV_4.jpg")
+# can = Canvas(root)
+# can.place(relx=0, rely=0, relwidth=1, relheight=1)
+# # add image
+# can.create_image(0, 0, image=bg_img, anchor="nw")
+# can.create_text(450,
+#                 200,
+#                 text="Welcome To COVID Live Tracker\nYour COVID Related Stats Viewer, Analyzer and Downloader \nTo "
+#                      "Proceed, Please Click 'Next'",
+#                 font=(ft, 20),
+#                 fill=clr2,
+#                 justify='center')
+
+
+# ************** Add image BackGround **************
+img_label = Label(root, image=bg_img)
+img_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+welcome = Label(img_label, text="Welcome To COVID Live Tracker \nYour COVID Related Stats Viewer, Analyzer and "
+                                "Downloader\nTo Proceed, Please Click Next",
                 pady=25,
                 padx=0,
                 border=10,
                 background=clr1,
                 foreground=clr2,
                 borderwidth=2,
-                font=('Times New Roman bold', 30))
+                font=(ft, 25))
 
-welcome.pack(pady=25)
+welcome.pack(pady=50)
 
 
 def home_next():
@@ -36,10 +58,8 @@ def home_next():
     country_region_window.configure(bg=bkg1)
     country_region_window.minsize(width=500, height=300)
 
-    region_input_instruction = 'HI ' + user_name.get() + """
-    Kindly choose a country or a region 
-            to view from the dropdown list,
-            then click 'Next'"""
+    region_input_instruction = 'Hi ' + user_name.get() + "\nKindly choose a country or a region \nto view from the " \
+                                                         "dropdown list,then click Next "
     r_c_instruction_label = Label(country_region_window,
                                   text=region_input_instruction,
                                   pady=25,
@@ -49,7 +69,7 @@ def home_next():
                                   background=clr1,
                                   foreground=clr2,
                                   borderwidth=2,
-                                  font=('Times New Roman bold', 25))
+                                  font=(ft, 25))
 
     r_c_instruction_label.pack(pady=25)
 
@@ -66,7 +86,8 @@ def home_next():
                  'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland',
                  'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea',
                  'Guinea-Bissau', 'Guyana', 'Haiti', 'Holy See (Vatican City State)', 'Honduras', 'Hungary', 'Iceland',
-                 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Palestinian', 'Italy', 'Jamaica',
+                 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Palestinian', 'Italy',
+                 'Jamaica',
                  'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea (North)', 'Korea (South)', 'Kuwait',
                  'Kyrgyzstan', 'Lao PDR', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein',
                  'Lithuania', 'Luxembourg', 'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives',
@@ -104,20 +125,19 @@ def home_next():
     reg_drop_list.pack(pady=25, padx=25)
 
     def country_region_next():
-        ################ start country_region_window  #################
+
+        # ############### start country_region_window  #################
 
         if clicked_country.get() != 'Choose a Country':
             country_region_window.destroy()
-            ###############  start country page ###############
-            bkg1 = '#787A91'
-            clr1 = '#EEEEEE'
-            clr2 = '#141E61'
-            ft = 'serif bold'
+            # ##############  start country page ###############
+
             country_page = Tk()
             country_page.title('Country_page')
+            country_page.configure(bg=bkg1)
             country_page.minsize(width=800, height=400)
 
-            ###### country Table
+            # ##### country Table
 
             def dload_data():
                 data_set = pd.read_csv('topics.csv')
@@ -138,6 +158,7 @@ def home_next():
                 selected_df.to_csv(f'{path}.csv')
                 messagebox.showinfo(title=f'{clicked_country.get()} Download',
                                     message='Your Data Has been downloaded successfully')
+
             def back_function():
                 country_page.destroy()
 
@@ -177,6 +198,15 @@ def home_next():
                 #                }
                 # selected_df = pd.DataFrame(selected_df)
 
+                # ************** Start Styling Table **************
+                style = ttk.Style()
+                style.theme_use('clam')
+                style.configure("Treeview",
+                                background=buttons,
+                                foreground=clr2,
+                                rowheight=30,
+                                fieldbackground=buttons)
+                # ************** End Styling Table **************
                 tree = ttk.Treeview(country_page, padding=5, height=3, selectmode='browse')
                 scrollbar = Scrollbar(country_page, orient="horizontal", width=20)
                 tree.config(xscrollcommand=scrollbar.set)
@@ -196,32 +226,31 @@ def home_next():
                     tree.insert("", "end", values=row)
 
                 tree.pack()
-                scrollbar.pack(fill = 'both')
+                scrollbar.pack(fill='both')
 
             display_data()
 
             def display_report():
                 data_set = pd.read_csv('topics.csv')
                 selected_country = data_set[data_set.Name == clicked_country.get()]
-                name = {selected_country['Name'].values[0]}
-                F_R_today = round(((selected_country['NewDeaths'].values[0]/selected_country['NewConfirmed'].values[0])*100), 2)
-                surviving_ratio = round((((selected_country['NewConfirmed'].values[0]-selected_country['NewDeaths'].values[0])/(selected_country['NewConfirmed'].values[0]))*100),2)
+                name = selected_country['Name'].values[0]
+                F_R_today = round(
+                    ((selected_country['NewDeaths'].values[0] / selected_country['NewConfirmed'].values[0]) * 100), 2)
+                surviving_ratio = round((((selected_country['NewConfirmed'].values[0] - selected_country['NewDeaths'].values[0]) / (selected_country['NewConfirmed'].values[0])) * 100), 2)
                 if selected_country['NewConfirmed'].values[0] > 0:
 
-                    messagebox.showinfo(title= f'{clicked_country.get()}  report',
-                                        message=f'''Today is {datetime.now().strftime("%Y-%m-%d %H:%M")} \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of surviving from the virus for today is  {surviving_ratio} % \nThe possibility of your death is {F_R_today} % \nThe health system in {name} not good 
-                        
-                    ''')
+                    messagebox.showinfo(title=f'{clicked_country.get()}  report',
+                                        message=f'Today is {datetime.now().strftime("%Y-%m-%d %H:%M")} \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of surviving from the virus for today is  {surviving_ratio} % \nThe possibility of your death is {F_R_today} % \nThe health system in {name} not good ')
                 else:
-                    messagebox.showinfo(title= f'{clicked_country.get()}  report',
-                                        message=f'''Today is  {datetime.now().strftime("%Y-%m-%d %H:%M")} \nThere is no new cases for today in {name} \nEnjoy spending time there :) ''')
+                    messagebox.showinfo(title=f'{clicked_country.get()}  report',
+                                        message=f'Today is  {datetime.now().strftime("%Y-%m-%d %H:%M")} \nThere is no new cases for today in {name} \nEnjoy spending time there :) ')
 
             rep_btn = Button(country_page,
                              text='Show Report',
-                             bg=clr2,
+                             bg=buttons,
                              height=2,
                              width=15,
-                             foreground=clr1,
+                             foreground=clr2,
                              font=(ft, 15),
                              justify='center',
                              command=display_report
@@ -230,10 +259,10 @@ def home_next():
 
             vis_btn = Button(country_page,
                              text='Visualize Data',
-                             bg=clr2,
+                             bg=buttons,
                              height=2,
                              width=15,
-                             foreground=clr1,
+                             foreground=clr2,
                              font=(ft, 15),
                              justify='center',
                              command=visualize_data
@@ -242,10 +271,10 @@ def home_next():
 
             back_btn = Button(country_page,
                               text='Back',
-                              bg=clr2,
+                              bg=buttons,
                               height=2,
                               width=15,
-                              foreground=clr1,
+                              foreground=clr2,
                               font=(ft, 15),
                               justify='center',
                               command=back_function
@@ -253,10 +282,10 @@ def home_next():
             back_btn.pack(side='left')
 
             dl_btn = Button(country_page, text='Download',
-                            bg=clr2,
+                            bg=buttons,
                             height=2,
                             width=15,
-                            foreground=clr1,
+                            foreground=clr2,
                             font=(ft, 15),
                             justify='center',
                             command=dload_data
@@ -264,19 +293,15 @@ def home_next():
             dl_btn.pack(padx=50, side='right')
             country_page.mainloop()
 
-            ################ end country page #################
+            # ############### end country page #################
 
         elif clicked_region.get() != 'Choose a Region':
             country_region_window.destroy()
-            ################ start region page #################
-
-            bkg1 = '#787A91'
-            clr1 = '#EEEEEE'
-            clr2 = '#141E61'
-            ft = 'serif bold'
+            # ############### start region page #################
 
             region_page = Tk()
             region_page.title('Region_page')
+            region_page.configure(bg=bkg1)
             region_page.minsize(width=900, height=600)
 
             def display_region_data():
@@ -284,6 +309,15 @@ def home_next():
                 selected_region = clicked_region.get()
                 data_set = data_set[data_set.Region == selected_region]
 
+                # ************** Start Styling Table **************
+                style = ttk.Style()
+                style.theme_use('clam')
+                style.configure("Treeview",
+                                background=buttons,
+                                foreground=clr2,
+                                rowheight=30,
+                                fieldbackground=buttons)
+                # ************** End Styling Table **************
                 tree = ttk.Treeview(region_page, padding=5, height=14, selectmode='browse')
                 scrollbar = Scrollbar(region_page, orient="horizontal", width=20)
                 tree.config(xscrollcommand=scrollbar.set)
@@ -314,7 +348,8 @@ def home_next():
 
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
-                data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio', ascending=False)
+                data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio',
+                                                                                             ascending=False)
 
                 sns.barplot(data=data_set, x='Fatality_ratio', y='Name', ci=None)
                 plt.xticks(rotation=90)
@@ -338,19 +373,21 @@ def home_next():
                 minimum = data_set['Fatality_ratio'].min()
                 maximum = data_set['Fatality_ratio'].max()
                 avg = round((data_set['TotalDeaths'].mean()), 2)
-                survivors = round(((data_set['survivors']/data_set['TotalConfirmed']*100).mean()), 2)
+                survivors = round(((data_set['survivors'] / data_set['TotalConfirmed'] * 100).mean()), 2)
                 n_min = data_set[(data_set['Fatality_ratio'] == minimum)]['Name'].values[0]
                 n_max = data_set[(data_set['Fatality_ratio'] == maximum)]['Name'].values[0]
                 region = selected_region
 
-                messagebox.showinfo(title=f'{selected_region}', message=f'''Today date is, {datetime.now().strftime('%Y-%m-%d %H:%M')} \n{n_min} is the safest country to visit in {region} \nwith Fatality_ratio = {minimum}% \nFor your safety avoid visiting {n_max} \nwith Fatality_ratio =  {maximum}%  \nThe average of death cases in {region} = {avg}  \nwith survival rate = {survivors}%''')
+                messagebox.showinfo(title=f'{region}',
+                                    message=f"Today date is, {datetime.now().strftime('%Y-%m-%d %H:%M')} \n{n_min} is the safest country to visit in {region} \nwith Fatality_ratio = {minimum}% \nFor your safety avoid visiting {n_max} \nwith Fatality_ratio =  {maximum}%  \nThe average of death cases in {region} = {avg}  \nwith survival rate = {survivors}% "
+                                    )
 
             rep_btn = Button(region_page,
                              text='Show Report',
-                             bg=clr2,
+                             bg=buttons,
                              height=2,
                              width=15,
-                             foreground=clr1,
+                             foreground=clr2,
                              font=(ft, 15),
                              justify='center',
                              command=display_region_report
@@ -359,10 +396,10 @@ def home_next():
 
             vis_btn = Button(region_page,
                              text='Visualize Data',
-                             bg=clr2,
+                             bg=buttons,
                              height=2,
                              width=15,
-                             foreground=clr1,
+                             foreground=clr2,
                              font=(ft, 15),
                              justify='center',
                              command=Visualize_region_data
@@ -371,10 +408,10 @@ def home_next():
 
             back_btn = Button(region_page,
                               text='Back',
-                              bg=clr2,
+                              bg=buttons,
                               height=2,
                               width=15,
-                              foreground=clr1,
+                              foreground=clr2,
                               font=(ft, 15),
                               justify='center',
                               command=back_function
@@ -382,10 +419,10 @@ def home_next():
             back_btn.pack(side='left')
 
             dl_btn = Button(region_page, text='Download',
-                            bg=clr2,
+                            bg=buttons,
                             height=2,
                             width=15,
-                            foreground=clr1,
+                            foreground=clr2,
                             font=(ft, 15),
                             justify='center',
                             command=dload_region_data
@@ -394,19 +431,19 @@ def home_next():
 
             region_page.mainloop()
 
-            ################ end region page #################
+            # ############### end region page #################
 
         else:
-            messagebox.showinfo(title = 'ERROR', message='Please Select country or region ! ')
+            messagebox.showinfo(title='ERROR', message='Please Select country or region ! ')
 
     next_btn = Button(country_region_window,
                       text='Next',
                       command=country_region_next,
-                      bg=clr2,
+                      bg=buttons,
                       height=2,
                       width=15,
-                      foreground=clr1,
-                      font=('serif bold', 15),
+                      foreground=clr2,
+                      font=(ft, 15),
                       justify='center')
 
     next_btn.pack(side='right', pady=50)
@@ -414,45 +451,61 @@ def home_next():
     back_btn = Button(country_region_window,
                       text='Back',
                       command=country_region_back,
-                      bg=clr2,
+                      bg=buttons,
                       height=2,
                       width=15,
-                      foreground=clr1,
-                      font=('serif bold', 15),
+                      foreground=clr2,
+                      font=(ft, 15),
                       justify='center')
 
-    back_btn.pack(side='left', pady=150)
+    back_btn.pack(side='left', pady=50)
 
     root.destroy()
 
     country_region_window.mainloop()
-    ################ end country_region_window  #################
+    # ############### end country_region_window  #################
 
 
-user_name = Entry(root, width=25,
-                  font=('Andalus', 20),
-                  bg=clr2,
+user_name = Entry(img_label, width=25,
+                  font=(ft, 20),
+                  bg=clr1,
                   bd=2.5,
-                  foreground=clr1,
+                  foreground=clr2,
                   justify='center',
                   borderwidth=5
                   )
 
-user_name.pack(pady=25)
+user_name.place(x=250, y=450)
 user_name.insert(0, 'Please Enter Your Name')
 
-next_btn = Button(root,
+next_btn = Button(img_label,
                   text='Next',
                   command=home_next,
-                  bg=clr2,
+                  bg=buttons,
                   height=2,
                   width=15,
-                  foreground=clr1,
-                  font=('serif bold', 15),
+                  foreground=clr2,
+                  font=(ft, 15),
                   justify='center'
                   )
 
-next_btn.pack(pady=50)
+next_btn.place(x=350, y=550)
+#
+# def resizer(e):
+#     global bg, re_bg, new_bg
+#     bg = Image.open('CV_4.jpg')
+#     re_bg = bg.resize((e.width, e.height), Image.ANTIALIAS)
+#     new_bg = ImageTk.PhotoImage(re_bg)
+#     can.create_image(0, 0, image=new_bg, anchor="nw")
+#     can.create_text(450,
+#                     200,
+#                     text="Welcome To COVID Live Tracker\nYour COVID Related Stats Viewer, \nAnalyzer and Downloader \nTo "
+#                          "Proceed, Please Click 'Next'",
+#                     font=(ft, 25),
+#                     fill=clr2,
+#                     justify='center')
+
 
 if __name__ == '__main__':
+    # root.bind('<Configure>', resizer)
     root.mainloop()
