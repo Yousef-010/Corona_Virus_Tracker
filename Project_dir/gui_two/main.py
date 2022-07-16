@@ -1,11 +1,16 @@
-from tkinter import *
-from tkinter import ttk
-from tkinter import messagebox, filedialog
+import os
+import sys
 from datetime import datetime
-from Project_dir.api.data_analysis import *
-from PIL import ImageTk
+from tkinter import *
+from tkinter import messagebox, filedialog
+from tkinter import ttk
+
 import matplotlib.pyplot as plt
 import seaborn as sns
+from PIL import ImageTk
+
+from Project_dir.api.data_analysis import *
+
 
 # *************** Global Style Variables ****************
 bkg1 = '#1d2b2c'  # Background color
@@ -61,8 +66,10 @@ def home_next():
 
     r_c_instruction_label.pack(pady=25)
 
+    # Should return to root (home window)
     def country_region_back():
         country_region_window.destroy()
+        os.system('python3 main.py')
 
     countries = data_set['Name'].values
 
@@ -85,6 +92,9 @@ def home_next():
 
     def country_region_next():
         # ############### start country_region_window  #################
+        if clicked_country.get() == 'Israel':
+            messagebox.showinfo(title="OOPS!", message="You must mean Palestine")
+            country_region_window.destroy()
 
         if clicked_country.get() != 'Choose a Country':
             country_region_window.destroy()
@@ -106,8 +116,9 @@ def home_next():
                 messagebox.showinfo(title=f'{clicked_country.get()} Download',
                                     message='Your Data Has been downloaded successfully')
 
-            def back_function():
+            def back_to_country_region_from_country_function():
                 country_page.destroy()
+                import country_region
 
             def visualize_data():
                 TC = data_set[data_set.Name == clicked_country.get()].iloc[0]['TotalDeaths']
@@ -165,10 +176,10 @@ def home_next():
                 if selected_country['NewConfirmed'].values[0] > 0:
 
                     messagebox.showinfo(title=f'{clicked_country.get()}  report',
-                                        message=f'Today is {datetime.now().strftime("%Y-%m-%d %H:%M")} \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of surviving from the virus for today is  {surviving_ratio} % \nThe possibility of your death is {F_R_today} % \nThe health system in {name} not good ')
+                                        message=f'Today is {datetime.now().strftime("%A, "+"%Y-%m-%d")}. As of {datetime.now().strftime("%H:%M%p")} today: \nWe dont recommend to visit {clicked_country.get()} now \nThe possibility of surviving from the virus for today is  {surviving_ratio} % \nThe possibility of your death is {F_R_today} % \nThe health system in {name} not good ')
                 else:
                     messagebox.showinfo(title=f'{clicked_country.get()}  report',
-                                        message=f'Today is  {datetime.now().strftime("%Y-%m-%d %H:%M")} \nThere is no new cases for today in {name} \nEnjoy spending time there :) ')
+                                        message=f'Today is  {datetime.now().strftime("%A, "+"%Y-%m-%d")}. As of {datetime.now().strftime("%H:%M%p")} today: \nThere are no new cases for today in {name} \nEnjoy your time there :) ')
 
             rep_btn = Button(country_page,
                              text='Show Report',
@@ -202,7 +213,7 @@ def home_next():
                                          foreground=clr2,
                                          font=(ft, 15),
                                          justify='center',
-                                         command=back_function
+                                         command=back_to_country_region_from_country_function
                                          )
             back_country_button.pack(side='left')
 
@@ -262,10 +273,11 @@ def home_next():
 
             display_region_data()
 
-            def back_function():
+            def back_to_country_region_from_region_function():
                 region_page.destroy()
+                import country_region
 
-            def Visualize_region_data():
+            def visualize_region_data():
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
                 data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio', ascending=False)
@@ -298,7 +310,7 @@ def home_next():
                 region = selected_region
 
                 messagebox.showinfo(title=f'{region}',
-                                    message=f"Today date is, {datetime.now().strftime('%Y-%m-%d %H:%M')} \n{n_min} is the safest country to visit in {region} \nwith Fatality_ratio = {minimum}% \nFor your safety avoid visiting {n_max} \nwith Fatality_ratio =  {maximum}%  \nThe average of death cases in {region} = {avg}  \nwith survival rate = {survivors}% "
+                                    message=f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As of {datetime.now().strftime('%H:%M%p')}: \n{n_min} is the safest country to visit in {region} \nwith Fatality_ratio = {minimum}% \nFor your safety avoid visiting {n_max} \nwith Fatality ratio =  {maximum}%  \nThe average of death cases in {region} = {avg}  \nwith survival rate = {survivors}% "
                                     )
 
             rep_btn = Button(region_page,
@@ -321,7 +333,7 @@ def home_next():
                              foreground=clr2,
                              font=(ft, 15),
                              justify='center',
-                             command=Visualize_region_data
+                             command=visualize_region_data
                              )
             vis_btn.pack(side='right')
 
@@ -333,7 +345,7 @@ def home_next():
                                         foreground=clr2,
                                         font=(ft, 15),
                                         justify='center',
-                                        command=back_function
+                                        command=back_to_country_region_from_region_function
                                         )
             back_region_button.pack(side='left')
 
