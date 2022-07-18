@@ -7,9 +7,8 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from Project_dir.api.data_analysis import *
+from source_code.api.data_analysis import *
 import main
-
 
 # *************** Global Style Variables ****************
 bkg1 = '#1d2b2c'  # Background color
@@ -23,8 +22,6 @@ ftt = ('Times', 17),
 tble_clr = '#041315'  # Table Background color
 data_set = pd.read_csv('topics.csv')
 
-
-
 # *************** Render ****************
 country_region_window = Tk()
 country_region_window.title('Country/Region Input')
@@ -36,12 +33,12 @@ country_region_window.minsize(width=1000, height=600)
 # img_label_2.place(relx=0, rely=0, relwidth=1, relheight=1)
 
 if main.user_name.get() == 'Please Enter Your Name':
-    region_input_instruction = "Kindly Choose a Country or a Region \nto View From The " \
+    region_input_instruction = "Hello Sir/Ma'am\nKindly Choose a Country or a Region \nto View From The " \
                                "Dropdown List, Then Click Next"
 else:
     region_input_instruction = 'Hello ' + main.user_name.get().capitalize() + "\nKindly Choose a Country or a " \
-                                                                         "Region \nto View From The " \
-                                                                         "Dropdown List, Then Click Next"
+                                                                              "Region \nto View From The " \
+                                                                              "Dropdown List, Then Click Next"
 
 r_c_instruction_label = Label(country_region_window,
                               text=region_input_instruction,
@@ -69,7 +66,7 @@ clicked_country = StringVar(country_region_window)
 clicked_country.set('Choose a Country')
 country_drop_list = OptionMenu(country_region_window, clicked_country, *countries)
 country_drop_list.configure(bg=buttons, fg=clr3, font=('Times', 17))
-country_drop_list.pack(pady=25, padx=25)
+country_drop_list.pack(pady=15, padx=25)
 
 regions = [
     'Middle_East',
