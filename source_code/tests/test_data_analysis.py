@@ -1,5 +1,5 @@
 import pytest
-from Project_dir.api.data_analysis import *
+from source_code.api.data_analysis import *
 
 
 def test_find_max_deaths():

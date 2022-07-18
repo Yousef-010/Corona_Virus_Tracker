@@ -8,18 +8,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import ImageTk
 
-from Project_dir.api.data_analysis import *
+from source_code.api.data_analysis import *
 
 
 # *************** Global Style Variables ****************
 bkg1 = '#1d2b2c'  # Background color
 clr1 = '#0b3b40'  # Label Box color
 clr2 = '#9fe3de'  # Font color
-clr3 = '#74d1b6'
+clr3 = '#74d1b6'   # Country/region screen BG color
 buttons = '#0b3b40'  # Buttons Background color
 ft = 'Times'  # Primary Font type
 ft2 = 'courier'  # Secondary Font type
-ftt = ('Times', 17),
+ftt = ('Times', 17),  # country & region lists font
 tble_clr = '#041315'  # Table Background color
 data_set = pd.read_csv('topics.csv')
 
@@ -28,7 +28,7 @@ root.title('COVID Live Tracker')
 root.configure(bg=bkg1)
 root.minsize(width=1024, height=576)
 
-home_bg_img = ImageTk.PhotoImage(file="corona_stats.jpg")
+home_bg_img = ImageTk.PhotoImage(file="Assets/corona_stats.jpg")
 
 # ************** Add image BackGround **************
 img_label = Label(root, image=home_bg_img)
@@ -48,8 +48,6 @@ welcome = Label(img_label, text=wlcm_txt,
                 borderwidth=2,
                 font=('andalus', 25))
 welcome.pack(pady=25, padx=0)
-# welcome.pack(pady=50, padx=0)
-# welcome.pack(side='right', padx=30)
 
 
 def home_next():
@@ -60,7 +58,7 @@ def home_next():
     country_region_window.minsize(width=1000, height=600)
 
     if user_name.get() == 'Please Enter Your Name':
-        region_input_instruction = "Kindly Choose a Country or a Region \nto View From The " \
+        region_input_instruction = "Hello Sir/Ma'am\nKindly Choose a Country or a Region \nto View From The " \
                                    "Dropdown List, Then Click Next"
     else:
         region_input_instruction = 'Hello ' + user_name.get().capitalize() + "\nKindly Choose a Country or a " \
@@ -91,7 +89,7 @@ def home_next():
     clicked_country.set('Choose a Country')
     country_drop_list = OptionMenu(country_region_window, clicked_country, *countries)
     country_drop_list.configure(bg=buttons, fg=clr3, font=('Times', 17))
-    country_drop_list.pack(pady=25, padx=25)
+    country_drop_list.pack(pady=15, padx=25)
 
     regions = [
         'Middle_East',
