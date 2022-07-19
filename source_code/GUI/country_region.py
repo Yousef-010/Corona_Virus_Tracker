@@ -1,4 +1,6 @@
 import os
+import pyttsx3
+
 from datetime import datetime
 from tkinter import *
 from tkinter import messagebox, filedialog
@@ -28,10 +30,6 @@ country_region_window.title('Country/Region Input')
 country_region_window.configure(bg=clr3)
 country_region_window.minsize(width=1000, height=600)
 
-# country_region_bg_img = ImageTk.PhotoImage(file="country_region_input_2.jpg")
-# img_label_2 = Label(country_region_window, image=country_region_bg_img)
-# img_label_2.place(relx=0, rely=0, relwidth=1, relheight=1)
-
 if main.user_name.get() == 'Please Enter Your Name':
     region_input_instruction = "Hello Sir/Ma'am\nKindly Choose a Country or a Region \nto View From The " \
                                "Dropdown List, Then Click Next"
@@ -57,7 +55,7 @@ r_c_instruction_label.pack(pady=25)
 # Should return to root (home window)
 def country_region_back():
     country_region_window.destroy()
-    os.system('python3 main.py')
+    os.system('python main.py')
 
 
 countries = data_set['Name'].values
@@ -83,21 +81,21 @@ reg_drop_list.pack(pady=25, padx=25)
 
 
 def country_region_next():
-    # ############### start country_region_window  #################
+    # --------------- start country_region_window ---------------
     if clicked_country.get() == 'Israel':
         messagebox.showinfo(title="OOPS!", message="You must mean Palestine")
         country_region_window.destroy()
 
     if clicked_country.get() != 'Choose a Country':
         country_region_window.destroy()
-        # ##############  start country page ###############
+        # --------------- start country page ---------------
 
         country_page = Tk()
         country_page.title('Country_page')
         country_page.configure(bg=bkg1)
         country_page.minsize(width=800, height=400)
 
-        # ##### country Table
+        # --------------- country Table ---------------
 
         def dload_data():
             path = filedialog.askdirectory()
@@ -110,7 +108,7 @@ def country_region_next():
 
         def back_to_country_region_from_country_function():
             country_page.destroy()
-            os.system('python3 country_region.py')
+            os.system('python country_region.py')
 
         def visualize_data():
             TC = data_set[data_set.Name == clicked_country.get()].iloc[0]['TotalDeaths']
@@ -166,19 +164,44 @@ def country_region_next():
                                        selected_country['NewDeaths'].values[0]) / (
                                           selected_country['NewConfirmed'].values[0])) * 100), 2)
             if selected_country['NewConfirmed'].values[0] > 0:
-                messagebox.showinfo(title=f'{clicked_country.get()}  report',
-                                    message=f'Today is {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As '
-                                            f'of {datetime.now().strftime("%H:%M%p")}: \nWe don\'t '
-                                            f'recommend visiting {clicked_country.get()} right '
-                                            f'now. \nThe probability of surviving the pandemic today stands '
-                                            f'at {surviving_ratio}% \nThe probability of fatal infection '
-                                            f'is {F_R_today}% \nThe health situation in {name} is not optimal.')
+                bad_country_msg = f'Today is {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As ' \
+                                  f'of {datetime.now().strftime("%H:%M%p")}: \nWe don\'t ' \
+                                  f'recommend visiting {clicked_country.get()} right ' \
+                                  f'now. \nThe probability of surviving the pandemic today stands ' \
+                                  f'at {surviving_ratio}% \nThe probability of fatal infection ' \
+                                  f'is {F_R_today}% \nThe health situation in {name} is not optimal.'
+
+                def read_bad_country_report():
+                    box = messagebox.askquestion(title=f'{clicked_country.get()}  report',
+                                                 message=bad_country_msg + '\n\nRead Report?')
+                    if box == 'yes':
+
+                        txt_to_speech = pyttsx3.init()
+                        txt_to_speech.setProperty("rate", 135)
+
+                        txt_to_speech.say(bad_country_msg)
+                        txt_to_speech.runAndWait()
+
+                read_bad_country_report()
+
             else:
-                messagebox.showinfo(title=f'{clicked_country.get()}  report',
-                                    message=f'Today is  {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As '
-                                            f'of {datetime.now().strftime("%H:%M%p")}: \nThere'
-                                            f' are no new confirmed cases of COVID infection'
-                                            f'  in {name} \nEnjoy your time there :) -_* ^^ ')
+                good_country_message = f'Today is  {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As ' \
+                                       f'of {datetime.now().strftime("%H:%M%p")}: \nThere' \
+                                       f' are no new confirmed cases of COVID infection' \
+                                       f' in {name} \nEnjoy your time there'
+
+                def read_good_country_report():
+                    box = messagebox.askquestion(title=f'{clicked_country.get()}  report',
+                                                 message=good_country_message + " ^^" + '\n\nRead Report?')
+
+                    if box == 'yes':
+                        txt_to_speech = pyttsx3.init()
+                        txt_to_speech.setProperty("rate", 135)
+
+                        txt_to_speech.say(good_country_message)
+                        txt_to_speech.runAndWait()
+
+                read_good_country_report()
 
         rep_btn = Button(country_page,
                          text='Show Report',
@@ -228,11 +251,11 @@ def country_region_next():
         dl_btn.pack(padx=50, side='right')
         country_page.mainloop()
 
-        # ############### end country page #################
+        # --------------- end country page ---------------
 
     elif clicked_region.get() != 'Choose a Region':
         country_region_window.destroy()
-        # ############### start region page #################
+        # --------------- start region page ---------------
 
         region_page = Tk()
         region_page.title('Region_page')
@@ -252,6 +275,7 @@ def country_region_next():
                             foreground=clr2,
                             rowheight=30,
                             fieldbackground=buttons)
+
             # ************** End Styling Table **************
             tree = ttk.Treeview(region_page, padding=5, height=14, selectmode='browse')
             scrollbar = Scrollbar(region_page, orient="horizontal", width=20)
@@ -274,7 +298,7 @@ def country_region_next():
 
         def back_to_country_region_from_region_function():
             region_page.destroy()
-            os.system('python3 country_region.py')
+            os.system('python country_region.py')
 
         def visualize_region_data():
             data_set = pd.read_csv('topics.csv')
@@ -309,14 +333,25 @@ def country_region_next():
             n_max = data_set[(data_set['Fatality_ratio'] == maximum)]['Name'].values[0]
             region = selected_region
 
-            messagebox.showinfo(title=f'{region}',
-                                message=f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As"
-                                        f" of {datetime.now().strftime('%H:%M%p')}: \n{n_min} is the safest country"
-                                        f" to visit in {region} with a fatality ratio of {minimum}%.\nFor your "
-                                        f"safety avoid visiting {n_max} where the fatality ratio stands "
-                                        f"at {maximum}% \nThe average of death cases in {region} = {avg}\nwith "
-                                        f"survival rate = {survivors}% "
-                                )
+            region_msg = f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As" \
+                         f" of {datetime.now().strftime('%H:%M%p')}: \n{n_min} is the safest country" \
+                         f" to visit in {region.replace('_', ' ')} with a fatality ratio of {minimum}%.\nFor your " \
+                         f"safety avoid visiting {n_max} where the fatality ratio stands " \
+                         f"at {maximum}% \nThe average of death cases in {region.replace('_', ' ')} is {avg}\n with " \
+                         f"a survival rate of {survivors}% "
+
+            def read_good_country_report():
+                box = messagebox.askquestion(title=f'{clicked_country.get()} report',
+                                             message=region_msg + '\n\nRead Report?')
+
+                if box == 'yes':
+                    txt_to_speech = pyttsx3.init()
+                    txt_to_speech.setProperty("rate", 135)
+
+                    txt_to_speech.say(region_msg)
+                    txt_to_speech.runAndWait()
+
+            read_good_country_report()
 
         rep_btn = Button(region_page,
                          text='Show Report',
@@ -367,7 +402,7 @@ def country_region_next():
 
         region_page.mainloop()
 
-        # ############### end region page #################
+        # --------------- end region page ---------------
 
     else:
         messagebox.showinfo(title='ERROR', message='Please Select a Country or a Region! ')
