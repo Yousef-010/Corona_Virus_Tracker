@@ -30,12 +30,27 @@ root.minsize(width=1024, height=576)
 
 home_bg_img = ImageTk.PhotoImage(file="Assets/corona_stats.jpg")
 
-# ************** Add image BackGround **************
-img_label = Label(root, image=home_bg_img)
-img_label.place(relx=0, rely=0, relwidth=1, relheight=1)
-
 wlcm_txt = "Welcome To Your Corona Virus Stat Viewer, Analyzer & " \
            "Downloader\nTo Proceed, Please Click Next"
+# ************** Add image BackGround Using Canvas **************
+# can = Canvas(root)
+# can.place(relx=0, rely=0, relwidth=1, relheight=1)
+# # add image
+# can.create_image(0, 0, image=home_bg_img, anchor="nw")
+# can.create_text(450,
+#                 200,
+#                 text="Welcome To COVID Live Tracker\nYour COVID Related Stats Viewer, Analyzer and Downloader \nTo "
+#                      "Proceed, Please Click 'Next'",
+#                 font=(ft, 20),
+#                 fill=clr2,
+#                 justify='center')
+#
+
+
+
+# ************** Add image BackGround Using Lables **************
+img_label = Label(root, image=home_bg_img)
+img_label.place(relx=0, rely=0, relwidth=1, relheight=1)
 
 welcome = Label(img_label, text=wlcm_txt,
                 pady=0,
@@ -182,20 +197,20 @@ def home_next():
             def display_report():
                 selected_country = data_set[data_set.Name == clicked_country.get()]
                 name = selected_country['Name'].values[0]
-                F_R_today = round(
-                    ((selected_country['NewDeaths'].values[0] / selected_country['NewConfirmed'].values[0]) * 100), 2)
-                surviving_ratio = round((((selected_country['NewConfirmed'].values[0] -
-                                           selected_country['NewDeaths'].values[0]) / (
-                                              selected_country['NewConfirmed'].values[0])) * 100), 2)
+                F_R_today = round(((selected_country['NewDeaths'].values[0] / selected_country['NewConfirmed'].values[0]) * 100), 2)
+                new_deaths = selected_country['NewDeaths'].values[0]
+                # surviving_ratio = round((((selected_country['NewConfirmed'].values[0] -
+                #                            selected_country['NewDeaths'].values[0]) / (
+                #                               selected_country['NewConfirmed'].values[0])) * 100), 2)
                 if selected_country['NewConfirmed'].values[0] > 0:
 
                     messagebox.showinfo(title=f'{clicked_country.get()}  report',
                                         message=f'Today is {datetime.now().strftime("%A, "+"%Y-%m-%d")}. As '
                                                 f'of {datetime.now().strftime("%H:%M%p")}: \nWe don\'t '
                                                 f'recommend visiting {clicked_country.get()} right '
-                                                f'now. \nThe probability of surviving the pandemic today stands '
-                                                f'at {surviving_ratio}% \nThe probability of fatal infection '
-                                                f'is {F_R_today}% \nThe health situation in {name} is not optimal.')
+                                                f'now. \n Today\'s Deaths = {new_deaths} \nThe probability of fatal '
+                                                f'infection is {F_R_today}% \nThe health situation in {name} is not '
+                                                f'optimal.')
                 else:
                     messagebox.showinfo(title=f'{clicked_country.get()}  report',
                                         message=f'Today is  {datetime.now().strftime("%A, "+"%Y-%m-%d")}. As '
