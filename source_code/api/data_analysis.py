@@ -1,5 +1,4 @@
 from source_code.api.api import *
-import numpy as np
 
 
 def convert_data_to_data_frame():
@@ -10,9 +9,6 @@ def convert_data_to_data_frame():
 
 def fill_data_into_csv_file():
     topics_df = convert_data_to_data_frame()
-    # text_str = fill_data_into_object()[1]
-    # with open('data.json', 'w') as f:
-    # f.write(str(text_str))
     topics_df.to_csv('topics.csv', index=None)
     return topics_df
 
@@ -92,7 +88,7 @@ def total_survival_for_each_country():
 def total_infected_middle_east():
     data_set = read_csv_data()
     middle_east_infected = 0
-    middle_east_view = data_set.loc[data_set['Region'] == 'Middle East']
+    middle_east_view = data_set.loc[data_set['Region'] == 'Middle_East']
     for i in middle_east_view['TotalConfirmed']:
         middle_east_infected += i
     return middle_east_infected
@@ -101,7 +97,7 @@ def total_infected_middle_east():
 def total_infected_western_europe():
     data_set = read_csv_data()
     western_europe_infected = 0
-    western_europe_view = data_set.loc[data_set['Region'] == 'Western Europe']
+    western_europe_view = data_set.loc[data_set['Region'] == 'Western_Europe']
     for i in western_europe_view['TotalConfirmed']:
         western_europe_infected += i
     return western_europe_infected
