@@ -158,24 +158,23 @@ def country_region_next():
         def display_report():
             selected_country = data_set[data_set.Name == clicked_country.get()]
             name = selected_country['Name'].values[0]
-            F_R_today = round(
-                ((selected_country['NewDeaths'].values[0] / selected_country['NewConfirmed'].values[0]) * 100), 2)
-            surviving_ratio = round((((selected_country['NewConfirmed'].values[0] -
-                                       selected_country['NewDeaths'].values[0]) / (
-                                          selected_country['NewConfirmed'].values[0])) * 100), 2)
+            total_cases = selected_country['TotalConfirmed'].values[0]
+            total_deaths = selected_country['TotalDeaths'].values[0]
+            new_confirmed = selected_country['NewConfirmed'].values[0]
+            new_deaths = selected_country['NewDeaths'].values[0]
+
             if selected_country['NewConfirmed'].values[0] > 0:
-                bad_country_msg = f'Today is {datetime.now().strftime("%A, " + "%Y-%m-%d")}. As ' \
-                                  f'of {datetime.now().strftime("%H:%M%p")}: \nWe don\'t ' \
-                                  f'recommend visiting {clicked_country.get()} right ' \
-                                  f'now. \nThe probability of surviving the pandemic today stands ' \
-                                  f'at {surviving_ratio}% \nThe probability of fatal infection ' \
-                                  f'is {F_R_today}% \nThe health situation in {name} is not optimal.'
+                bad_country_msg = f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As of" \
+                                  f" {datetime.now().strftime('%H:%M%p')}:\nFor your own safety, try to " \
+                                  f"avoid visiting {name} as {new_confirmed} new cases of COVID 19 infections" \
+                                  f" have been confirmed with {new_deaths} new deaths, raising the total " \
+                                  f"number of infections to {total_cases} cases, and total death toll " \
+                                  f"to {total_deaths} since the pandemic broke out"
 
                 def read_bad_country_report():
-                    box = messagebox.askquestion(title=f'{clicked_country.get()}  report',
+                    box = messagebox.askquestion(title=f'{clicked_country.get()}  Report',
                                                  message=bad_country_msg + '\n\nRead Report?')
                     if box == 'yes':
-
                         txt_to_speech = pyttsx3.init()
                         txt_to_speech.setProperty("rate", 135)
 
@@ -191,7 +190,7 @@ def country_region_next():
                                        f' in {name} \nEnjoy your time there'
 
                 def read_good_country_report():
-                    box = messagebox.askquestion(title=f'{clicked_country.get()}  report',
+                    box = messagebox.askquestion(title=f'{clicked_country.get()}  Report',
                                                  message=good_country_message + " ^^" + '\n\nRead Report?')
 
                     if box == 'yes':
@@ -332,16 +331,16 @@ def country_region_next():
             n_min = data_set[(data_set['Fatality_ratio'] == minimum)]['Name'].values[0]
             n_max = data_set[(data_set['Fatality_ratio'] == maximum)]['Name'].values[0]
             region = selected_region
-
             region_msg = f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As" \
-                         f" of {datetime.now().strftime('%H:%M%p')}: \n{n_min} is the safest country" \
-                         f" to visit in {region.replace('_', ' ')} with a fatality ratio of {minimum}%.\nFor your " \
-                         f"safety avoid visiting {n_max} where the fatality ratio stands " \
-                         f"at {maximum}% \nThe average of death cases in {region.replace('_', ' ')} is {avg}\n with " \
-                         f"a survival rate of {survivors}% "
+                         f" of {datetime.now().strftime('%H:%M%p')}: \nWith a fatality rate of {minimum}% ," \
+                         f" {n_min} is the {region.replace('_', ' ')}'s safest travel destination.\nOn the " \
+                         f"other hand, avoid traveling to {n_max} for your own safety, as the fatality " \
+                         f"rate stands at {maximum}% right now. \nThe average of death cases in " \
+                         f"{region.replace('_', ' ')} region is {avg}\n with a survival rate of {survivors}% "
+
 
             def read_good_country_report():
-                box = messagebox.askquestion(title=f'{clicked_country.get()} report',
+                box = messagebox.askquestion(title=f'{selected_region.replace("_", " ")} Report',
                                              message=region_msg + '\n\nRead Report?')
 
                 if box == 'yes':
