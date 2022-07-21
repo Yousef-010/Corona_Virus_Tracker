@@ -91,7 +91,7 @@ def country_region_next():
         # --------------- start country page ---------------
 
         country_page = Tk()
-        country_page.title('Country_page')
+        country_page.title('Country View')
         country_page.configure(bg=bkg1)
         country_page.minsize(width=800, height=400)
 
@@ -257,7 +257,7 @@ def country_region_next():
         # --------------- start region page ---------------
 
         region_page = Tk()
-        region_page.title('Region_page')
+        region_page.title('Region View')
         region_page.configure(bg=bkg1)
         region_page.minsize(width=900, height=600)
 
@@ -337,7 +337,6 @@ def country_region_next():
                          f"other hand, avoid traveling to {n_max} for your own safety, as the fatality " \
                          f"rate stands at {maximum}% right now. \nThe average of death cases in " \
                          f"{region.replace('_', ' ')} region is {avg}\n with a survival rate of {survivors}% "
-
 
             def read_good_country_report():
                 box = messagebox.askquestion(title=f'{selected_region.replace("_", " ")} Report',

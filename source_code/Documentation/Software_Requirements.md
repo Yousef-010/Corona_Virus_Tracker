@@ -55,7 +55,7 @@ it; _those on the front lines and the less fortunate_.
     viewed within the app concerning the chosen region/country.
     - Visualize: Show a visualization of the viewed data with the option to
     download as an image.
-    - Show a report: View a short status report of the health situation in the
+    - Show report: View a short status report of the health situation in the
     chosen country/region.
   - Once chosen, an option will alert the user to the completion of their choice.
   - Terminate: The app will terminate normally whenever the user closes the app window.
