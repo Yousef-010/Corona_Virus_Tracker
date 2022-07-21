@@ -7,7 +7,7 @@ from tkinter import ttk
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-from PIL import ImageTk, Image
+from PIL import ImageTk
 
 from source_code.api.data_analysis import *
 
@@ -48,8 +48,18 @@ welcome = Label(img_label, text=wlcm_txt,
 welcome.pack(pady=25, padx=0)
 
 
-
 def home_next():
+    """
+    This function will be invoked when the 'Next' button in the (Home screen) is clicked.
+    It will transition the user to the (country_region_window) by:
+        1. Destroying the [Home screen]
+        2. Rendering a new screen; the 'country/region input screen', containing:
+            i. Instructions [Label].
+            ii. Countries [OptionList].
+            iii. Regions [OptionList].
+            iv. 'Back' to home [Button].
+            v. 'Next' to either 'country page' or 'Regions page' [Button].
+    """
     country_region_window = Tk()
     country_region_window.title('Country/Region Input')
     country_region_window.configure(bg=clr3)
@@ -78,6 +88,15 @@ def home_next():
 
     # Should return to root (home window)
     def country_region_back():
+        """
+        This function will be invoked when the 'Back' button in the 'Country/Region Input' window is clicked.
+        It will transition the user to either the 'Covid Live Tracker' or Home window by:
+            1. Destroying the [country_region_window]
+            2. Rerunning the 'Home' window:
+                i. Welcome [Label].
+                ii. User Name [Entry Box].
+                iii. 'Next' to the 'country/Region Input' window [Button].
+        """
         country_region_window.destroy()
         os.system('python main.py')
 
@@ -103,6 +122,18 @@ def home_next():
     reg_drop_list.pack(pady=25, padx=25)
 
     def country_region_next():
+        """
+        This function will be invoked when the 'Next' button in the 'country/region input' screen is clicked.
+        It will transition the user to either 'country window' or 'Regions window' by:
+        1. Destroying the 'country/region input' screen
+        2. Rendering a new screen containing:
+            i. Table viewing the requested data [TreeView].
+            ii. Download [Button].
+            iii. Visualize [Button].
+            iv. Show Report [Button].
+            v. 'Back' to home [Button].
+        """
+
         # --------------- start country_region_window  ---------------
         if clicked_country.get() == 'Israel':
             messagebox.showinfo(title="OOPS!", message="You must mean Palestine")
@@ -113,13 +144,18 @@ def home_next():
             # ---------------  start country page ---------------
 
             country_page = Tk()
-            country_page.title('Country_page')
+            country_page.title('Country View')
             country_page.configure(bg=bkg1)
             country_page.minsize(width=800, height=400)
 
             # --------------- country Table ---------------
 
             def dload_data():
+                """
+                This function will be invoked when the 'Download' button in the 'country/region' screen is clicked.
+                It will open a dialog box allowing the user to specify a directory for their download.
+                The downloaded file if of the [.csv] format, an excel table.
+                """
                 path = filedialog.askdirectory()
                 selected_country = data_set[data_set.Name == clicked_country.get()]
 
@@ -129,10 +165,25 @@ def home_next():
                                     message='Your Data Has been downloaded successfully')
 
             def back_to_country_region_from_country_function():
+                """
+                This function will be invoked when the 'Back' button in the 'Country' window is clicked.
+                It will transition the user to the (country_region_window) by:
+                    1. Destroying the 'Country' window
+                    2. Rendering a new screen; the 'country/region input screen', containing:
+                        i. Instructions [Label].
+                        ii. Countries [OptionList].
+                        iii. Regions [OptionList].
+                        iv. 'Back' to home [Button].
+                        v. 'Next' to either 'country page' or 'Regions page' [Button].
+                    """
                 country_page.destroy()
                 import country_region
 
             def visualize_data():
+                """
+                This function will be invoked when the 'Visualize' button in the 'country' or 'region' screen is clicked
+                It will show a figure box showing a visual that can be customized or downloaded as a [.PNG] file
+                """
                 TC = data_set[data_set.Name == clicked_country.get()].iloc[0]['TotalDeaths']
                 TD = data_set[data_set.Name == clicked_country.get()].iloc[0]['survivors']
 
@@ -146,6 +197,9 @@ def home_next():
                 plt.show()
 
             def display_data():
+                """
+                This function renders the table included in the 'Country' and Window.
+                """
                 data_set = pd.read_csv('topics.csv')
                 data_set = data_set[data_set.Name == clicked_country.get()]
 
@@ -178,14 +232,21 @@ def home_next():
             display_data()
 
             def display_report():
-
+                """
+                This function will be invoked when the 'Show Report' button in
+                the 'country' screen is clicked.
+                It will show a message box with a report based on an analysis of the data viewed in the
+                tree view.
+                This box will include:
+                    1. 'No' button, to close the message box.
+                    2. 'Yes' button to read the viewed report employing a text-to-speech feature.
+                """
                 selected_country = data_set[data_set.Name == clicked_country.get()]
                 name = selected_country['Name'].values[0]
                 total_cases = selected_country['TotalConfirmed'].values[0]
                 total_deaths = selected_country['TotalDeaths'].values[0]
                 new_confirmed = selected_country['NewConfirmed'].values[0]
                 new_deaths = selected_country['NewDeaths'].values[0]
-                survive_ratio = (100 - selected_country['Fatality_ratio'].values[0])
 
                 if selected_country['NewConfirmed'].values[0] > 0:
                     bad_country_msg = f"Today is {datetime.now().strftime('%A, ' + '%Y-%m-%d')}. As of" \
@@ -196,7 +257,10 @@ def home_next():
                                       f"to {total_deaths} since the pandemic broke out"
 
                     def read_bad_country_report():
-
+                        """
+                        This function will be invoked when the 'Yes' button in the report message box is clicked.
+                        It will read the text of the country report using methods of the 'pyttsx3' library.
+                        """
                         box = messagebox.askquestion(title=f'{clicked_country.get()}  Report',
                                                      message=bad_country_msg + '\n\nRead Report?')
                         if box == 'yes':
@@ -215,6 +279,10 @@ def home_next():
                                            f' in {name} \nEnjoy your time there'
 
                     def read_good_country_report():
+                        """
+                        This function will be invoked when the 'Yes' button in the report message box is clicked.
+                        It will read the text of the country report using methods of the 'pyttsx3' library.
+                        """
                         box = messagebox.askquestion(title=f'{clicked_country.get()}  Report',
                                                      message=good_country_message + " ^^ " + '\n\nRead Report?')
                         if box == 'yes':
@@ -281,11 +349,14 @@ def home_next():
             # --------------- start region page ---------------
 
             region_page = Tk()
-            region_page.title('Region_page')
+            region_page.title('Region View')
             region_page.configure(bg=bkg1)
             region_page.minsize(width=900, height=600)
 
             def display_region_data():
+                """
+                This function renders the table included in the 'Region' Window.
+                """
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
                 data_set = data_set[data_set.Region == selected_region]
@@ -319,10 +390,26 @@ def home_next():
             display_region_data()
 
             def back_to_country_region_from_region_function():
+                """
+                This function will be invoked when the 'Back' button in the 'Region' window is clicked.
+                It will transition the user to the (country_region_window) by:
+                    1. Destroying the 'Region' data window
+                    2. Rendering a new screen; the 'country/region input screen', containing:
+                        i. Instructions [Label].
+                        ii. Countries [OptionList].
+                        iii. Regions [OptionList].
+                        iv. 'Back' to home [Button].
+                        v. 'Next' to either 'country page' or 'Regions page' [Button].
+                    """
+
                 region_page.destroy()
                 import country_region
 
             def visualize_region_data():
+                """
+                This function will be invoked when the 'Visualize' button in the or 'region' screen is clicked.
+                It will show a figure box showing a visual that can be customized or downloaded as a [.PNG] file
+                """
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
                 data_set = data_set[data_set.Region == selected_region].head(19).sort_values('Fatality_ratio',
@@ -333,6 +420,11 @@ def home_next():
                 plt.show()
 
             def dload_region_data():
+                """
+                This function will be invoked when the 'Download' button in the or 'region' screen is clicked.
+                It will open a dialog box allowing the user to specify a directory for their download.
+                The downloaded file if of the [.csv] format, an excel table.
+                """
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
                 data_set = data_set[data_set.Region == selected_region]
@@ -344,6 +436,15 @@ def home_next():
                                     message='Your Data Has been downloaded successfully')
 
             def display_region_report():
+                """
+                This function will be invoked when the 'Show Report' button in
+                the 'region' screen is clicked.
+                It will show a message box with a report based on an analysis of the region data viewed in the
+                tree view.
+                This box will include:
+                    1. 'No' button, to close the message box.
+                    2. 'Yes' button to read the viewed report employing a text-to-speech feature.
+                """
                 data_set = pd.read_csv('topics.csv')
                 selected_region = clicked_region.get()
                 data_set = data_set[data_set.Region == selected_region]
@@ -361,8 +462,11 @@ def home_next():
                              f"rate stands at {maximum}% right now. \nThe average of death cases in " \
                              f"{region.replace('_', ' ')} region is {avg}\n with a survival rate of {survivors}% "
 
-
                 def read_region_report():
+                    """
+                    This function will be invoked when the 'Yes' button in the region report message box is clicked.
+                    It will read the text of the region report using methods of the 'pyttsx3' library.
+                    """
                     box = messagebox.askquestion(title=f'{selected_region.replace("_", " ")} Report',
                                                  message=region_msg + '\n\nRead Report?')
                     if box == 'yes':
