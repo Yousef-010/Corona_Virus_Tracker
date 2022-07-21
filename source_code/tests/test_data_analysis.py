@@ -11,54 +11,81 @@ def test_total_count_of_country_names():
 
 
 def test_find_max_deaths():
+    """
+   This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalDeaths'].max()
     expected = 1023736
     assert actual == expected
 
 
 def test_find_min_deaths():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalDeaths'].min()
     expected = 0
     assert actual == expected
 
 
 def test_find_max_confirmed():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalConfirmed'].max()
     expected = 89453076
     assert actual == expected
 
 
 def test_find_min_confirmed():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalConfirmed'].min()
     expected = 1
     assert actual == expected
 
 
 def test_find_global_death():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalDeaths'].sum()
     expected = 6363126
     assert actual == expected
 
 
 def test_find_global_confirmed():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalConfirmed'].sum()
     expected = 560298445
     assert actual == expected
 
 
 def test_find_global_avg_death():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalDeaths'].mean()
     expected = 32631.415384615386
     assert actual == expected
 
 
 def test_find_global_avg_confirmed():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     actual = data_set['TotalConfirmed'].mean()
     expected = 2873325.358974359
     assert actual == expected
 
 
 def test_total_infected_middle_east():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\api\data_analysis.py
+    """
     middle_east_infected = 0
     middle_east_view = data_set.loc[data_set['Region'] == 'Middle_East']
     for i in middle_east_view['TotalConfirmed']:
@@ -69,6 +96,9 @@ def test_total_infected_middle_east():
 
 
 def test_total_infected_western_europe():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     western_europe_infected = 0
     western_europe_view = data_set.loc[data_set['Region'] == 'Western_Europe']
     for i in western_europe_view['TotalConfirmed']:
@@ -79,6 +109,9 @@ def test_total_infected_western_europe():
 
 
 def test_get_report_based_on_avg_of_survivors():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     average_survivors = int(data_set['survivors'].mean())
     good_countries = []
     for i in data_set[data_set['survivors'] > average_survivors].Name:
@@ -89,6 +122,9 @@ def test_get_report_based_on_avg_of_survivors():
 
 
 def test_get_report_based_on_avg_of_survivors2():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     average_survivors = int(data_set['survivors'].mean())
     bad_countries = []
     for i in data_set[data_set['survivors'] < average_survivors].Name:
@@ -99,6 +135,9 @@ def test_get_report_based_on_avg_of_survivors2():
 
 
 def test_transportation_to_country():
+    """
+    This function tests: Corona_Virus_Tracker\source_code\ api\data_analysis.py
+    """
     country_can_visit = []
     for i in data_set[data_set['NewConfirmed'] > 0].Name:
         country_can_visit.append(i)
