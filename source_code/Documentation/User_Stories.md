@@ -1,7 +1,5 @@
 # User Stories
 
-<hr\>
-
 ## 1. Doctor
 
 > As a medical professional, I want the ability to access the latest statistics

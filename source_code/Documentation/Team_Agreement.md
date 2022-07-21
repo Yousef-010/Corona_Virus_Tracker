@@ -14,7 +14,7 @@
 - [Ms. Shatha Al Rayyani](https://github.com/ShathaAlrayyani)
 - [Mr. Essa Abu Al Khair](https://github.com/Essa31)
 
-## Instructor:
+## Instructor
 
 - Ahmad Al-Mohammad
 
@@ -103,61 +103,63 @@ feels comfortable speaking up?
 
 <br/>
 
-
 ## Work Plan
 
 <hr/>
 
-- How you will identify tasks, assign tasks, know when they are complete, and manage
-work in general?
-  - we will follow the principles of agile, so we will understand the requirements,
-  write user scenarios and use stories
-  - and define the priorities for each requirement and use Trello as a kanban board
-  for our project
-  - and we will move each requirement through the board based on the status of it
-  - kanban labels : ToDo , Doing , ToTest , Testing , Integration Testing , Done,
-  Gathering
-- What project management tool will be used?
-  - Trello and Git
+### How you will identify tasks, assign tasks, know when they are complete, and manage work in general?
   
-  <br/>
-  
+- Following the **Agile** principles, we will;
+  - Understand the requirements.
+  - Write user scenarios and user stories.
+  - Define the priorities for each requirement using _Trello_ as
+  a _kanban board_ for our project.
+  - Move each requirement across the board based on its status.
+  - Kanban labels: **`ToDo`**, **`Doing`**, **`ToTest`**, **`Testing`**,
+  **`Integration Testing`**, **`Done`** & **`Gathering`**.
 
+### What project management tool will be used?
+
+- Trello.
+- Git.
+  
+<br/>
+  
 ## Presentation Deck
 
 <hr/>
 
 - Practice run of the presentation:
-  - Date:
-  - Time:  
-  - The place/Tool:
+  - Date: Wednesday, July 20th. 2022
+  - Time: 03:30 PM
+  - The place/Tool: Zoom
 - Actual presentation:
-  - Date:
-  - Time:  
-  - The place/Tool:
+  - Date: Thursday, July 21st. 2022
+  - Time: 10:00 AM
+  - The place/Tool: Zoom
 
-
-  <br/>
+<br/>
 
 ## Git Process
 
 <hr/>
 
--What components of your project will live on GitHub?
-  - we will divide the project into files, and we will follow SOLID principles in
+What components of your project will live on GitHub?
+
+- we will divide the project into files, and we will follow SOLID principles in
   our work
-  - Share the Project Repository:
-    - invite team members to the repo by sending an email to them
-    - give them the right access to the project
-  - What is your Git flow?
+- Share the Project Repository:
+  - invite team members to the repo by sending an email to them
+  - give them the right access to the project
+- What is your Git flow?
     -The work will be on branches for each feature of the project
-  - Will you be using a PR review workflow?
-    - No.
-  - How many people must review a PR?
-    - Two.
-  - Who merges PRs?
-    - The team leader will be responsible for the merging of the PRs the process will
+- Will you be using a PR review workflow?
+  - No.
+- How many people must review a PR?
+  - Two.
+- Who merges PRs?
+  - The team leader will be responsible for the merging of the PRs the process will
     be done during the meeting.
-    - All the project Features should be merged after checking the work with the team
+  - All the project Features should be merged after checking the work with the team
     members during the meeting.
-    - All the project Features will be merged at the end of each working day
+  - All the project Features will be merged at the end of each working day
